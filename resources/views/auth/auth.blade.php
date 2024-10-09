@@ -10,7 +10,7 @@
 @endsection
 
 @section('content')
-<div class="container right-panel-active" id="container">
+<div class="container" id="container">
     <div class="form-container sign-in-container">
         <form action="{{ route('login') }}" method="POST">
         @csrf
@@ -25,13 +25,13 @@
             </div>
             <button type="submit">Login</button>
             <span>Don't have an account? <span class="overlay-button" id="signUp">Register Here</span></span>
-            <a href="#">Forgot your password?</a>
+            <!-- <a href="#">Forgot your password?</a> -->
         </form>
     </div>
     <div class="form-container sign-up-container">
         <form action="{{ route('register') }}" method="POST">
         @csrf
-            <h1>OWLTEL</h1>
+            <h1 id="form-register-title">OWLTEL</h1>
             <div class="form-name-input">
                 <div class="form-input">
                     <label for="first_name">Name</label>
@@ -58,7 +58,7 @@
                 <label for="password_confirmation">Confirm Password</label>
                 <input type="password" name="password_confirmation" placeholder="Type your password here..." />
             </div>
-            <button>Sign Up</button>
+            <button id="form-register-button">Sign Up</button>
             <span>Already have an account? <span class="overlay-button" id="signIn">Login Here</span></span>
         </form>
     </div>
@@ -66,10 +66,10 @@
     <div class="overlay-container">
         <div class="overlay">
             <div class="overlay-panel overlay-right">
-                <!-- Image -->
+                <img src="{{ asset('img/register.png') }}" alt="My Image">
             </div>
             <div class="overlay-panel overlay-left">
-                <!-- Image -->
+                <img src="{{ asset('img/login.png') }}" alt="My Image">
             </div>
         </div>
     </div>
