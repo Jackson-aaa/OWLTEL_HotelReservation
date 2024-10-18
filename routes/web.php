@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\LocationController;
 
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\CustomerMiddleware;
@@ -24,3 +25,9 @@ Route::get('/auth', [AuthController::class, 'showAuthPage'])->middleware('guest'
 Route::post('/login', [AuthController::class,'login'])->name('login');
 Route::post('/register', [AuthController::class,'register'])->name('register');
 Route::post('/logout', [AuthController::class,'logout'])->name('logout');
+
+
+
+Route::prefix('admin')->group(function () {
+    Route::get('locations', [LocationController::class, 'index'])->name('admin.locations.index');
+});
