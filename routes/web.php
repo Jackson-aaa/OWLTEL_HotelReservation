@@ -30,4 +30,5 @@ Route::post('/logout', [AuthController::class,'logout'])->name('logout');
 
 Route::prefix('admin')->group(function () {
     Route::get('locations', [LocationController::class, 'index'])->name('admin.locations.index');
+    Route::post('locations', [LocationController::class, 'store'])->name('locations.store');
 });

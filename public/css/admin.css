@@ -6,11 +6,90 @@
 
 body {
 	background: #F9F9F9;
-	display: flex;
+	/* display: flex; */
+	padding: 5%;
 	justify-content: center;
 	align-items: center;
-	flex-direction: column;
+	/* flex-direction: column; */
 	font-family: 'Inter', sans-serif;
-	height: 100vh;
-	margin: -20px 0 50px;
+	/* margin: 100px 0 10px; */
+}
+
+
+.modal-container {
+    display: none; 
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
+}
+
+.modal {
+    display: block;
+    width: 50%;
+	max-height: 50%;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
+
+.modal-content {
+    padding: 20px;
+	border: none;
+}
+
+.close {
+    position: absolute;
+    top: 0px;  
+    right: 10px; 
+    font-size: 30px;
+    cursor: pointer;
+    color: black; 
+}
+
+.close:hover {
+    color: red;
+}
+
+.upper{
+	display: flex;
+	justify-content: space-between;
+}
+
+.table-container{
+	width: 100%;
+	background:white;
+	border-radius: 20px;
+	padding: 2%;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.table{
+	background: white;
+}
+
+.add{
+	position: absolute;
+    top: 20%;  
+    right: 3.5%;
+}
+
+.add-b {
+    width: 46px;
+    height: 46px;
+    border: none;
+    border-radius: 50%;
+    background: #430000;
+    color: white;
+    font-size: 35px;
+	display: flex;
+    justify-content: center;
+    align-items: center;
+	padding: 0%;
 }
