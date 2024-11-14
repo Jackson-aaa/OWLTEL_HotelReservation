@@ -11,7 +11,7 @@ class AuthController extends Controller
 {
     public function showAuthPage()
     {
-        return view("auth.auth");
+        return view("auth.auth", ['hideNavbar' => true]);
     }
 
     public function login(Request $request)
