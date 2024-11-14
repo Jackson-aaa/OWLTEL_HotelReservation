@@ -32,3 +32,7 @@ Wipe out the database
 Rollback migration
 
 ``php artisan migrate:rollback``
+
+Seed database
+
+``php artisan db:seed``
