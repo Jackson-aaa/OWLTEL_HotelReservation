@@ -14,12 +14,13 @@
 @php
 $columns = ['id', 'name', 'location_id', 'type', 'description', 'image_link'];
 $displayNames = ['ID', 'Name', 'Location ID', 'Type', 'Description', 'Image Link'];
-$tableName = "Locations"
+$tableName = "Locations";
+$actionName = "Add Location";
 @endphp
 
 <x-admintable :columns="$columns" :displayNames="$displayNames"  :rows="$locations" :tableName="$tableName" />
 
-<x-adminForm modalId="addLocationModal" :tableName="$tableName">
+<x-adminForm modalId="addLocationModal" :actionName="$actionName" :actionRoute="route('locations.store')">
         <div>
             <label for="name">Name:</label>
             <input type="text" name="name" id="name" required>
@@ -37,7 +38,7 @@ $tableName = "Locations"
             <option value="city">City</option>
             <option value="place">Place</option>
         </select>
-    </div>
+        </div>
         <div>
             <label for="description">Description:</label>
             <textarea name="description" id="description" required></textarea>
@@ -45,6 +46,9 @@ $tableName = "Locations"
         <div>
             <label for="image_link">Image Link:</label>
             <input type="text" name="image_link" id="image_link">
+        </div>
+        <div class="sub-container">
+            <button class="sub-button" type="submit">Submit</button>
         </div>
 </x-adminForm>
 

@@ -31,7 +31,7 @@ body {
 .modal {
     display: block;
     width: 50%;
-	max-height: 50%;
+	max-height: 61%;
     background: white;
     padding: 20px;
     border-radius: 8px;
@@ -42,6 +42,11 @@ body {
 .modal-content {
     padding: 20px;
 	border: none;
+}
+
+.modal-title{
+    font-weight: bold;
+    margin-bottom: 5px;
 }
 
 .close {
@@ -62,17 +67,44 @@ body {
 	justify-content: space-between;
 }
 
+.table-name{
+    color: #580000;
+    font-weight: bold;
+}
+
 .table-container{
 	width: 100%;
 	background:white;
 	border-radius: 20px;
 	padding: 2%;
+    overflow-x: auto;
 	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-.table{
-	background: white;
+.table {
+    background: white;
+    table-layout: fixed;
+    width: 100%;
 }
+
+.table th{
+    color:#580000;
+}
+
+.table th, .table td {
+    max-width: 200px; 
+    word-wrap: break-word; 
+    word-break: break-all; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+.action {
+    display: flex; 
+    flex-direction: column; 
+    align-items: flex-start; 
+}
+
 
 .add{
 	position: absolute;
@@ -88,8 +120,106 @@ body {
     background: #430000;
     color: white;
     font-size: 35px;
-	display: flex;
+    display: flex;
     justify-content: center;
     align-items: center;
-	padding: 0%;
+}
+
+.pagination-container {
+    display: flex;    
+    justify-content: flex-end; 
+    align-items: center;
+    margin-top: 20px;
+}
+
+.pagination .page-link {
+    padding: 8px 12px; 
+    font-size: 14px;      
+    color: #580000;      
+    border-radius: 8px;  
+    margin: 0 5px;       
+    text-decoration: none;  
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #580000; 
+    color: #fff;     
+}
+
+.pagination .page-link.disabled {
+    color: #ccc; 
+    background-color: #f8f9fa;
+}
+
+.pagination .page-item .page-link {
+    padding: 5px 10px;  
+}
+
+.sub-container{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+.sub-button{
+    padding: 5px 10px;
+    border: none;
+    background-color: #580000;
+    color: white;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.adm-form div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; 
+}
+
+.adm-form label {
+    min-width: 120px; 
+    margin-right: 10px; 
+}
+
+.adm-form input[type="text"] {
+    border: none;
+    border-bottom: 2px solid #000; 
+    outline: none;
+    width: 100%;
+    padding: 5px 0; 
+}
+
+.adm-form input[type="text"]:focus {
+    border-bottom: 2px solid #580000;
+}
+
+.adm-form textarea,
+.adm-form select {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc; 
+    border-radius: 4px;
+}
+
+.adm-form textarea {
+    resize: vertical;
+}
+
+.btn-edit{
+    padding: 0 10px;
+    border: solid #F4D010;
+    background-color: white;
+    border-radius: 20px;
+    color: #F4D010;
+    width: 100px;
+    margin-bottom: 5px;
+}
+
+.btn-delete{
+    padding: 0 10px;
+    border: solid #B1B1B1;
+    background-color: white;
+    border-radius: 20px;
+    color: #B1B1B1;
+    width: 100px;
 }
