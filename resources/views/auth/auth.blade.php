@@ -2,7 +2,7 @@
 @section('title', 'Authentication Page')
 
 @section('cssStyles')
-<link rel="stylesheet" href="{{asset('css/auth.css')}}">
+<link rel="stylesheet" href="{{asset('css/auth/auth.css')}}">
 @endsection
 
 @section('jsScripts')
