@@ -9,6 +9,7 @@
             <p>{{$actionRoute}}</p>
             <p class="modal-title">{{$actionName}}</p>
             <form id="{{ $id }}" class="adm-form" action="{{ $actionRoute }}" method="{{$method}}">
+                <input type="hidden" name="page" value="{{ request()->query('page', 1) }}">
                 @csrf
                 {{ $slot }}
             </form>

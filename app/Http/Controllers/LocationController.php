@@ -61,12 +61,22 @@ class LocationController extends Controller
             $location = Location::findOrFail($id);
             $location->update($request->all());
 
-            return redirect()->route('locations.index')->with('success', 'Location updated successfully!');
+            // Capture the 'page' parameter from the request and redirect back with it
+            $page = $request->input('page', 1); // Default to 1 if no page is specified
+
+            return redirect()
+                ->route('locations.index', ['page' => $page])
+                ->with('success', 'Location updated successfully!');
         } catch (\Exception $e) {
             \Log::error('Error updating location: ' . $e->getMessage());
-            return back()->withErrors(['error' => 'Could not update location.']);
+
+            return back()
+                ->withInput()
+                ->withErrors(['error' => 'Could not update location.']);
         }
     }
+
+
 
     public function destroy($id)
     {

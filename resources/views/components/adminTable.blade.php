@@ -6,6 +6,7 @@
 $modalIdContainer = "update-modal-container";
 $method = "POST";
 $id = "edit-form";
+$actionRoute="";
 @endphp
 
 <div>
@@ -36,12 +37,12 @@ $id = "edit-form";
                     @endforeach
                     <td>
                         <div class="action">
-                            <a href="javascript:void(0);" onclick="openEditModal('{{ $editRoute }}', {{ $row['id'] }})" class="btn-edit">Edit</a>
+                            <a href="javascript:void(0);" onclick="openEditModal('{{ $editRoute }}', '{{ $updateRoute }}', {{ $row['id'] }})" class="btn-edit">Edit</a>
 
-                            <x-adminform modalId="editModal" :id="$id" :actionName="$actionName2" :actionRoute="str_replace('__ID__', $row['id'], $updateRoute)" :modalIdContainer="$modalIdContainer" :method="$method">
+                            <x-adminform modalId="editModal" :id="$id" :actionName="$actionName2" :modalIdContainer="$modalIdContainer" :method="$method" :actionRoute="$actionRoute">
                                 @method('PUT')
                                 <div>
-                                    <label for="name">Name:</label>
+                                    <label for=" name">Name:</label>
                                     <input type="text" name="name" id="edit-name" required>
                                 </div>
                                 <div>
@@ -99,8 +100,9 @@ $id = "edit-form";
     @endif
 
     <script>
-        function openEditModal(edit, rowId) {
+        function openEditModal(edit, update, rowId) {
             const editUrl = edit.replace('__ID__', rowId);
+            const updateUrl = update.replace('__ID__', rowId);
 
             fetch(editUrl)
                 .then(response => response.json())
@@ -110,6 +112,8 @@ $id = "edit-form";
                     document.getElementById('edit-type').value = data.type;
                     document.getElementById('edit-description').value = data.description;
                     document.getElementById('edit-image_link').value = data.image_link;
+
+                    document.getElementById('edit-form').action = updateUrl;
 
                     document.getElementById('update-modal-container').style.display = 'flex';
                 })
