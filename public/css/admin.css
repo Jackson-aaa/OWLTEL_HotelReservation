@@ -213,6 +213,9 @@ body {
     color: #F4D010;
     width: 100px;
     margin-bottom: 5px;
+    text-align: center;  
+    text-decoration: none;
+    display: inline-block;
 }
 
 .btn-delete{
