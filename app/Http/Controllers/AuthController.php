@@ -50,9 +50,11 @@ class AuthController extends Controller
             'last_name' => 'nullable|string|max:255',
             'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:6|confirmed',
-            'phone_number' => 'required',
-            // 'phone_number' => 'required|regex:/^(\+?\d{1,3})?[-. \(\)]?(\d{1,4}[-. \(\)]?){1,5}$/',
+            'phone_number' => ['required', 'regex:/^(?:\+62|62|0)[2-9][0-9]{7,12}$/'],
             'image_link' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+        ],
+        [
+            'phone_number.regex' => 'The phone number must be a valid Indonesian phone number.',
         ]);
 
         $imageLink = null;
