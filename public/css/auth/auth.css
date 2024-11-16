@@ -259,3 +259,8 @@ input {
 .overlay-button#signIn {
 	color: #948977;
 }
+
+#validationToast {
+	color: #fff;
+	background-color: #430000;
+}
