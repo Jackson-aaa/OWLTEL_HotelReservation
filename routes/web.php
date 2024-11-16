@@ -1,4 +1,5 @@
 <?php
+use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
@@ -14,9 +15,7 @@ Route::middleware([AdminMiddleware::class])->prefix('admin')->group(function () 
 
 //Routes only for customer
 Route::middleware([CustomerMiddleware::class])->prefix('/')->group(function () {
-    Route::get('/', function () {
-        return view('guest.dashboard');
-    })->name('dashboard');
+    Route::get('/', [CustomerController::class, 'showDashboard'])->name('customer_dashboard');
 });
 
 //Global routes

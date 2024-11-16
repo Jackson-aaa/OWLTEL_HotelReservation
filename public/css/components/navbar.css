@@ -82,27 +82,30 @@ nav {
 .search-form {
     display: grid;
     width: 500px;
-    grid-template-columns: auto 1px auto 1px auto 38px;
+    grid-template-columns: 190px 1px auto 1px auto 38px;
     align-items: center;
     height: 34px;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 3px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
     border-radius: 5px;
 }
 
+.search-input {
+    padding-inline: 10px;
+}
+
 .search-form input {
     border: none;
     width: 100%;
-    text-align: center;
+    text-align: left;
     font-size: 15px;
-    padding-inline: 10px;
-    
+    color: rgba(0, 0, 0, 0.684);
 }
 
 .search-form input:focus {
     outline: none;
 }
 
-.search-form div {
+.divider {
     width: 1px;
     height: 25px;
     background-color: rgba(0, 0, 0, 0.225);
@@ -112,7 +115,8 @@ nav {
     background-color: #430000;
     color: #fff;
     border: none;
-    border-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
     cursor: pointer;
     height: 100%;
     width: 100%;
@@ -123,4 +127,34 @@ nav {
 
 .search-form button i {
     font-size: 15px;
+}
+
+.ui-datepicker {
+    width: 216px;
+    height: auto;
+    margin: 5px auto 0;
+    font: 9pt Arial, sans-serif;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, .5);
+}
+
+.ui-datepicker a {
+    text-decoration: none;
+}
+
+.ui-datepicker table {
+    width: 100%;
+}
+
+.input-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    padding-inline: 10px;
+}
+
+.input-container i{
+    color: rgba(0, 0, 0, 0.57);
+    font-size: 18px;
+    margin-right: 5px;
 }
