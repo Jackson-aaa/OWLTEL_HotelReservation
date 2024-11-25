@@ -13,7 +13,12 @@
 </head>
 
 <body>
-
+    <style>
+        main{
+            height: 100%;
+            margin: 20px 10px 10px 20px;
+        }
+    </style>
     @if (!isset($hideNavbar) || !$hideNavbar)
         <header>
             @include('components.navbar')

@@ -1,7 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-
+use App\Http\Controllers\DashboardController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\CustomerMiddleware;
 
@@ -14,9 +14,7 @@ Route::middleware([AdminMiddleware::class])->prefix('admin')->group(function () 
 
 //Routes only for customer
 Route::middleware([CustomerMiddleware::class])->prefix('/')->group(function () {
-    Route::get('/', function () {
-        return view('guest.dashboard');
-    })->name('dashboard');
+    Route::get('/', [DashboardController::class, 'showDashboard']);
 });
 
 //Global routes
@@ -24,3 +22,4 @@ Route::get('/auth', [AuthController::class, 'showAuthPage'])->middleware('guest'
 Route::post('/login', [AuthController::class,'login'])->name('login');
 Route::post('/register', [AuthController::class,'register'])->name('register');
 Route::post('/logout', [AuthController::class,'logout'])->name('logout');
+
