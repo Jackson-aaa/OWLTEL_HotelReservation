@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\BookingController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\CustomerMiddleware;
 
@@ -15,6 +16,7 @@ Route::middleware([AdminMiddleware::class])->prefix('admin')->group(function () 
 //Routes only for customer
 Route::middleware([CustomerMiddleware::class])->prefix('/')->group(function () {
     Route::get('/', [DashboardController::class, 'showDashboard']);
+    Route::get('/booking-history', [BookingController::class, 'showBookingHistory']);
 });
 
 //Global routes

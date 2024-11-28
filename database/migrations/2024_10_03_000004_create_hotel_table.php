@@ -11,10 +11,10 @@ return new class extends Migration
         Schema::create("hotels", function (Blueprint $table) {
             $table->id();
             $table->string("name");
-            $table->string("description");
+            $table->text("description");
             $table->string("address");
             $table->foreignId("location_id")->constrained();
-            $table->decimal("initial_price");
+            $table->float("initial_price");
             $table->string("image_link")->nullable();
             $table->timestamps();
         });
@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string("icon_link")->nullable();
             $table->timestamps();
         });
-        
+
         Schema::create("hotel_facilities", function (Blueprint $table) {
             $table->id();
             $table->foreignId("hotel_id")->constrained();

@@ -14,7 +14,7 @@ return new class extends Migration
             $table->foreignId("hotel_id")->constrained();
             $table->dateTime("check_in");
             $table->dateTime("check_out");
-            $table->decimal("total_price");
+            $table->float("total_price");
             $table->string("booking_for")->nullable();
             $table->dateTime("booking_date");
             $table->enum("status", ["Pending","Booked", "Done", "Cancelled"]);
