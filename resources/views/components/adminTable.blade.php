@@ -14,9 +14,10 @@ $actionRoute="";
         <div class="table-name">
             {{ $tableName }}
         </div>
-        <div class="search-bar">
-            <input type="text" placeholder="Search..." wire:model="searchTerm">
-        </div>
+        <form class="d-flex" role="search">
+            <input class="form-control me-2 input-font-size-xs" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-sm" type="submit">Search</button>
+        </form>
     </div>
 
     <div class="table-container">
@@ -33,7 +34,12 @@ $actionRoute="";
                 @foreach($rows as $row)
                 <tr>
                     @foreach($columns as $column)
-                    <td>{{ $row[$column] ?? 'N/A' }}</td>
+                    <td> @if($column === 'image_link' || $column === 'icon_link')
+                        <a href="{{ $row[$column] ?? '#' }}" target="_blank">{{ $row[$column] ?? 'N/A' }}</a>
+                        @else
+                        {{ $row[$column] ?? 'N/A' }}
+                        @endif
+                    </td>
                     @endforeach
                     <td>
                         <div class="action">

@@ -90,4 +90,10 @@ class LocationController extends Controller
             return back()->withErrors(['error' => 'Could not delete location.']);
         }
     }
+
+
+    public function search(Request $request)
+    {
+        
+    }
 }
