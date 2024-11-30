@@ -9,7 +9,7 @@ $id = "edit-form";
 $actionRoute="";
 @endphp
 
-<div>
+<div class="table-wrapper">
     <div class="upper">
         <div class="table-name">
             {{ $tableName }}
@@ -70,8 +70,12 @@ $actionRoute="";
                                     <textarea name="description" id="edit-description" required></textarea>
                                 </div>
                                 <div>
-                                    <label for="image_link">Image Link:</label>
-                                    <input type="text" name="image_link" id="edit-image_link">
+                                    <label for="image">Image:</label>
+                                    <input type="file" name="image" id="edit-image" accept="image/*">
+                                </div>
+                                <div>
+                                    <label for="image-preview">Current Image:</label>
+                                    <img id="image-preview" src="" alt="Current Image" width="100" style="display: block;">
                                 </div>
                                 <div class="sub-container">
                                     <button class="sub-button" type="submit">Submit</button>
@@ -117,7 +121,7 @@ $actionRoute="";
                     document.getElementById('edit-location_id').value = data.location_id;
                     document.getElementById('edit-type').value = data.type;
                     document.getElementById('edit-description').value = data.description;
-                    document.getElementById('edit-image_link').value = data.image_link;
+                    document.getElementById('image-preview').src = data.image_link;
 
                     document.getElementById('edit-form').action = updateUrl;
 
