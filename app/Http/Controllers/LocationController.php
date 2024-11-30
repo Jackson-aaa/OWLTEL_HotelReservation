@@ -29,7 +29,7 @@ class LocationController extends Controller
                 'location_id' => 'nullable|string|max:255',
                 'type' => 'required|string|max:255',
                 'description' => 'required|string',
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:20480'
             ]);
     
             $image = $request->file('image');
@@ -66,7 +66,7 @@ class LocationController extends Controller
             'location_id' => 'nullable|string|max:255',
             'type' => 'required|string|max:255',
             'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:20480'
         ]);
 
         if ($request->hasFile('image')) {
