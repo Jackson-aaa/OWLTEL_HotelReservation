@@ -11,9 +11,18 @@ use Illuminate\Support\Facades\Storage;
 class LocationController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $locations = Location::paginate(5);
+        $query = Location::query();
+
+        if ($request->has('search') && $request->search !== '') {
+            $search = $request->search;
+            $query->where('name', 'like', '%' . $search . '%')
+                ->orWhere('type', 'like', '%' . $search . '%')
+                ->orWhere('description', 'like', '%' . $search . '%');
+        }
+
+        $locations = $query->paginate(5);
         return view('admin.location', compact('locations'));
     }
 

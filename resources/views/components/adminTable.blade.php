@@ -10,13 +10,13 @@ $actionRoute="";
 @endphp
 
 <div class="table-wrapper">
-    <div class="upper">
+    <div class="upper mb-3">
         <div class="table-name">
             {{ $tableName }}
         </div>
-        <form class="d-flex" role="search">
-            <input class="form-control me-2 input-font-size-xs" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-sm" type="submit">Search</button>
+        <form class="d-flex" role="search" method="GET" action="{{ route('locations.index') }}">
+            <input class="form-control input-font-size-xs" name="search" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-sm fs-6" type="submit"><i class="fas fa-search"></i></button>
         </form>
     </div>
 
