@@ -14,7 +14,7 @@ $actionRoute="";
         <div class="table-name">
             {{ $tableName }}
         </div>
-        <form class="d-flex" role="search" method="GET" action="{{ route('locations.index') }}">
+        <form class="d-flex" role="search" method="GET" action="{{ route(strtolower($tableName).'.index') }}">
             <input class="form-control input-font-size-xs" name="search" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-sm fs-6" type="submit"><i class="fas fa-search"></i></button>
         </form>
