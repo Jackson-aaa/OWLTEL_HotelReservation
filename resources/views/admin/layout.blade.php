@@ -29,7 +29,7 @@
                     <i class="fa-solid fa-location-dot"></i>Locations
                 </a>
 
-                <a href="{{ $baseURL . '/facilites' }}" class="{{ Request::is('admin/facilites') ? 'sidebar-active' : '' }}">
+                <a href="{{ $baseURL . '/facilities' }}" class="{{ Request::is('admin/facilities') ? 'sidebar-active' : '' }}">
                     <div></div>
                     <i class="fa-solid fa-screwdriver-wrench"></i>Facilities
                 </a>

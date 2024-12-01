@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="{{ asset('css/layouts/main.css') }}">
     <link rel="icon" type="image/ico?" href="{{ asset('favicon.ico') }}">
 
+    <link rel="stylesheet" href="{{asset('iconpicker/assets/stylesheets/universal-icon-picker.min.css')}}">
+    <script src="{{asset('iconpicker/assets/js/universal-icon-picker.min.js')}}"></script>
     @yield('cssStyles')
 </head>
 
