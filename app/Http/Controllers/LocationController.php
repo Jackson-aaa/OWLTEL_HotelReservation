@@ -6,12 +6,23 @@ use App\Models\Location;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Storage;
+
 class LocationController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        $locations = Location::paginate(5);
+        $query = Location::query();
+
+        if ($request->has('search') && $request->search !== '') {
+            $search = $request->search;
+            $query->where('name', 'like', '%' . $search . '%')
+                ->orWhere('type', 'like', '%' . $search . '%')
+                ->orWhere('description', 'like', '%' . $search . '%');
+        }
+
+        $locations = $query->paginate(5);
         return view('admin.location', compact('locations'));
     }
 
@@ -20,17 +31,27 @@ class LocationController extends Controller
     {
 
         \Log::info($request->all());
-        // Validate the request data
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'location_id' => 'nullable|string|max:255',
-            'type' => 'required|string|max:255',
-            'description' => 'required|string',
-            'image_link' => 'required|url'
-        ]);
 
         try {
-            Location::create($request->all());
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'location_id' => 'nullable|string|max:255',
+                'type' => 'required|string|max:255',
+                'description' => 'required|string',
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:20480'
+            ]);
+    
+            $image = $request->file('image');
+            $imageName = $request->name . time() . '.' . $image->getClientOriginalExtension();
+            $imagePath = $image->storeAs('img/locations', $imageName);
+
+            Location::create([
+                'name' => $request['name'],
+                'location_id' => $request['location_id'],
+                'type' => $request['type'],
+                'description' => $request['description'],
+                'image_link' => asset('storage') . '/' . $imagePath
+            ]);
 
             return redirect()->route('locations.index')->with('success', 'Location added successfully!');
         } catch (\Exception $e) {
@@ -54,8 +75,15 @@ class LocationController extends Controller
             'location_id' => 'nullable|string|max:255',
             'type' => 'required|string|max:255',
             'description' => 'required|string',
-            'image_link' => 'required|url'
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:20480'
         ]);
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = $request->name . time() . '.' . $image->getClientOriginalExtension();
+            $imagePath = $image->storeAs('img/locations', $imageName);
+            $request['image_link'] = asset('storage') . '/' . $imagePath;
+        }
 
         try {
             $location = Location::findOrFail($id);
