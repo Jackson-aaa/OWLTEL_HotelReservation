@@ -13,7 +13,7 @@
 
 @php
     $columns = ['id', 'name', 'icon_link'];
-    $displayNames = ['ID', 'Name', 'Icon Link'];
+    $displayNames = ['ID', 'Name', 'Icon'];
     $tableName = "Facilities";
     $actionName = "Add Facility";
     $actionName2 = "Edit Facility";
@@ -47,14 +47,18 @@
             iconLibraries: [
                 'font-awesome-regular.min.json',
                 'font-awesome-solid.min.json',
-                'font-awesome-brands.min.json'
+                'font-awesome-brands.min.json',
+                'material-icons-filled.min.json',
+                'material-icons-outlined.min.json',
+                'material-icons-round.min.json',
+                'material-icons-sharp.min.json',
+                'material-icons-two-tone.min.json',
             ],
-            iconLibrariesCss: [
-                'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css'
-            ],
+            iconLibrariesCss: [],
             resetSelector: '',
             onSelect: function(jsonIconData) {
-                document.getElementById('icon_link').value = jsonIconData.iconClass;
+                console.log(jsonIconData);
+                document.getElementById('icon_link').value = jsonIconData.iconHtml;
             },
             onReset: function() {
                 document.getElementById('icon_link').value = '';
