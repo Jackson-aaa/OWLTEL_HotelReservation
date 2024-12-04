@@ -157,7 +157,8 @@
     word-wrap: break-word; 
     word-break: break-all; 
     overflow: hidden;
-    text-overflow: ellipsis; 
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .action {
@@ -169,7 +170,7 @@
 
 .add{
 	position: absolute;
-    top: 19%;
+    top: 175px;
     right: 0.5%;
 }
 
