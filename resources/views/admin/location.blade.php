@@ -20,11 +20,13 @@
     $modalIdContainer = "create-modal-container";
     $method = "POST";
     $id = "create-form";
+    $editSlot = "components.forms.editLocationForm";
 @endphp
 
 <x-admintable :columns="$columns" :displayNames="$displayNames" :rows="$locations" :tableName="$tableName"
     :editRoute="route('locations.edit', ['id' => '__ID__'])" :updateRoute="route('locations.update', ['id' => '__ID__'])"
-    :deleteRoute="route('locations.destroy', ['id' => '__ID__'])" :actionName2="$actionName2" />
+    :deleteRoute="route('locations.destroy', ['id' => '__ID__'])" :actionName2="$actionName2" 
+    :editSlot="$editSlot"/>
 
 <x-adminform modalId="addLocationModal" :id="$id" :actionName="$actionName" :actionRoute="route('locations.store')"
     :modalIdContainer="$modalIdContainer" :method="$method">
