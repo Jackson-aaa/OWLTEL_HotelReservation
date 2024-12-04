@@ -20,11 +20,12 @@
     $modalIdContainer = "create-modal-container";
     $method = "POST";
     $id = "create-form";
+    $editSlot = "components.forms.editFacilityForm";
 @endphp
 
 <x-admintable :columns="$columns" :displayNames="$displayNames" :rows="$facilities" :tableName="$tableName"
-    :editRoute="route('facilities.edit', ['id' => '__ID__'])" :updateRoute="route('facilities.update', ['id' => '__ID__'])"
-    :deleteRoute="route('facilities.destroy', ['id' => '__ID__'])" :actionName2="$actionName2" />
+    :editRoute="route('facilities.edit', ['id' => '__ID__'])" :updateRoute="route('facilities.update', ['id' => '__ID__'])" :deleteRoute="route('facilities.destroy', ['id' => '__ID__'])" :actionName2="$actionName2"
+    :editSlot="$editSlot" />
 
 <x-adminform modalId="addFacilityModal" :id="$id" :actionName="$actionName" :actionRoute="route('facilities.store')"
     :modalIdContainer="$modalIdContainer" :method="$method">
@@ -42,29 +43,34 @@
 </x-adminform>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function(event) {
-        const uip = new UniversalIconPicker('#icon_link', {
-            iconLibraries: [
-                'font-awesome-regular.min.json',
-                'font-awesome-solid.min.json',
-                'font-awesome-brands.min.json',
-                'material-icons-filled.min.json',
-                'material-icons-outlined.min.json',
-                'material-icons-round.min.json',
-                'material-icons-sharp.min.json',
-                'material-icons-two-tone.min.json',
-            ],
-            iconLibrariesCss: [],
-            resetSelector: '',
-            onSelect: function(jsonIconData) {
-                console.log(jsonIconData);
-                document.getElementById('icon_link').value = jsonIconData.iconHtml;
-            },
-            onReset: function() {
-                document.getElementById('icon_link').value = '';
-            }
+    document.addEventListener('DOMContentLoaded', function (event) {
+        const iconFields = ['#icon_link', '#edit-icon_link'];
+
+        iconFields.forEach(function (fieldId) {
+            const uip = new UniversalIconPicker(fieldId, {
+                iconLibraries: [
+                    'font-awesome-regular.min.json',
+                    'font-awesome-solid.min.json',
+                    'font-awesome-brands.min.json',
+                    'material-icons-filled.min.json',
+                    'material-icons-outlined.min.json',
+                    'material-icons-round.min.json',
+                    'material-icons-sharp.min.json',
+                    'material-icons-two-tone.min.json',
+                ],
+                iconLibrariesCss: [],
+                resetSelector: '',
+                onSelect: function (jsonIconData) {
+                    console.log(jsonIconData);
+                    document.querySelector(fieldId).value = jsonIconData.iconHtml;
+                },
+                onReset: function () {
+                    document.querySelector(fieldId).value = '';
+                }
+            });
         });
     });
+
 
 
     function openModal(modalId) {
