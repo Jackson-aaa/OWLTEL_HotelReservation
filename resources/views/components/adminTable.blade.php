@@ -3,10 +3,10 @@
 @endsection
 
 @php
-$modalIdContainer = "update-modal-container";
-$method = "POST";
-$id = "edit-form";
-$actionRoute="";
+    $modalIdContainer = "update-modal-container";
+    $method = "POST";
+    $id = "edit-form";
+    $actionRoute = "";
 @endphp
 
 <div class="table-wrapper">
@@ -14,8 +14,9 @@ $actionRoute="";
         <div class="table-name">
             {{ $tableName }}
         </div>
-        <form class="d-flex" role="search" method="GET" action="{{ route(strtolower($tableName).'.index') }}">
-            <input class="form-control input-font-size-xs" name="search" type="search" placeholder="Search" aria-label="Search">
+        <form class="d-flex" role="search" method="GET" action="{{ route(strtolower($tableName) . '.index') }}">
+            <input class="form-control input-font-size-xs" name="search" type="search" placeholder="Search"
+                aria-label="Search">
             <button class="btn btn-sm fs-6" type="submit"><i class="fas fa-search"></i></button>
         </form>
     </div>
@@ -25,43 +26,49 @@ $actionRoute="";
             <thead>
                 <tr>
                     @foreach($displayNames as $displayName)
-                    <th>{{ $displayName }}</th>
+                        <th>{{ $displayName }}</th>
                     @endforeach
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($rows as $row)
-                <tr>
-                    @foreach($columns as $column)
-                    <td> @if($column === 'image_link' || $column === 'icon_link')
-                        <a href="{{ $row[$column] ?? '#' }}" target="_blank">{{ $row[$column] ?? 'N/A' }}</a>
-                        @else
-                        {{ $row[$column] ?? 'N/A' }}
-                        @endif
-                    </td>
-                    @endforeach
-                    <td>
-                        <div class="action">
-                            <a href="javascript:void(0);" onclick="openEditModal('{{ $editRoute }}', '{{ $updateRoute }}', {{ $row['id'] }})" class="btn-edit">Edit</a>
+                    <tr>
+                        @foreach($columns as $column)
+                            <td> @if($column === 'image_link' || $column === 'icon_link')
+                                <a href="{{ $row[$column] ?? '#' }}" target="_blank">{{ $row[$column] ?? 'N/A' }}</a>
+                            @else
+                                {{ $row[$column] ?? 'N/A' }}
+                            @endif
+                            </td>
+                        @endforeach
+                        <td>
+                            <div class="action">
+                                <a href="javascript:void(0);"
+                                    onclick="openEditModal('{{ $editRoute }}', '{{ $updateRoute }}', {{ $row['id'] }})"
+                                    class="btn-edit">Edit</a>
 
-                            <x-adminform modalId="editModal" :id="$id" :actionName="$actionName2" :modalIdContainer="$modalIdContainer" :method="$method" :actionRoute="$actionRoute">
-                                @method('PUT')
-                                @include($editSlot)
-                            </x-adminform>
+                                <x-adminform modalId="editModal" :id="$id" :actionName="$actionName2"
+                                    :modalIdContainer="$modalIdContainer" :method="$method" :actionRoute="$actionRoute">
+                                    @method('PUT')
+                                    @include($editSlot)
+                                </x-adminform>
 
-                            <form id="deleteForm-{{ $row['id'] }}" action="{{ str_replace('__ID__', $row['id'], $deleteRoute) }}" method="POST" style="display:inline;">
-                                @csrf
-                                @method('DELETE')
+                                <form id="deleteForm-{{ $row['id'] }}"
+                                    action="{{ str_replace('__ID__', $row['id'], $deleteRoute) }}" method="POST"
+                                    style="display:inline;">
+                                    @csrf
+                                    @method('DELETE')
 
-                                <!-- wtf it says the second argument is error but IT WORKS!
-                                    I spent hours figuring this out, IT'S NOT AN ERROR!
-                                -->
-                                <button type="button" onclick="openModal2('deleteModal', {{ $row['id'] }})" class="btn-delete">Delete</button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
+                                    <!-- wtf it says the second argument is error but IT WORKS!
+                                        I spent hours figuring this out, IT'S NOT AN ERROR!
+                                    -->
+                                    <button type="button" onclick="openModal2('deleteModal', {{ $row['id'] }})"
+                                        class="btn-delete">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>
@@ -72,9 +79,9 @@ $actionRoute="";
 
 
     @if ($rows instanceof \Illuminate\Pagination\LengthAwarePaginator)
-    <div class="pagination-container">
-        {{ $rows->links('vendor.pagination.bootstrap-5') }}
-    </div>
+        <div class="pagination-container">
+            {{ $rows->links('vendor.pagination.bootstrap-5') }}
+        </div>
     @endif
 
     <script>
@@ -85,11 +92,29 @@ $actionRoute="";
             fetch(editUrl)
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById('edit-name').value = data.name;
-                    document.getElementById('edit-location_id').value = data.location_id;
-                    document.getElementById('edit-type').value = data.type;
-                    document.getElementById('edit-description').value = data.description;
-                    document.getElementById('image-preview').src = data.image_link;
+                    const form = document.getElementById('edit-form');
+
+                    form.querySelectorAll('input, select, textarea').forEach(input => {
+                        const fieldName = input.name || input.id; // Get name or id of the element
+
+                        if (data.hasOwnProperty(fieldName)) {
+                            if (input.tagName === 'INPUT') {
+                                // Handle input elements (text, number, etc.)
+                                input.value = data[fieldName];
+                            } else if (input.tagName === 'SELECT') {
+                                // Handle select dropdown elements
+                                input.value = data[fieldName]; // Set selected value
+                            } else if (input.tagName === 'TEXTAREA') {
+                                // Handle textarea elements
+                                input.value = data[fieldName];
+                            }
+                        }
+                    });
+
+                    if(data.hasOwnProperty('image_link')) {
+                        const imagePreview = document.getElementById('image-preview');
+                        imagePreview.src = data['image_link'];
+                    }
 
                     document.getElementById('edit-form').action = updateUrl;
 
