@@ -1,5 +1,3 @@
-@extends('layouts.main')
-
 @section('cssStyles')
 <link rel="stylesheet" href="{{asset('css/admin.css')}}">
 @endsection

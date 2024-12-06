@@ -1,38 +1,35 @@
-@extends('layouts.main')
+@extends('admin.layout')
 @section('title', 'Admin Location Page')
+
 
 @section('cssStyles')
 <link rel="stylesheet" href="{{asset('css/admin.css')}}">
 @endsection
 
-@section('content')
-
+@section('page-content')
 <div class="add">
-    <button class="add-b" onclick="openModal('addLocationModal')">+</button>
+    <button class="add-b" onclick="openModal('addLocationModal')"><i class="fa-solid fa-plus"></i></button>
 </div>
 
 @php
-$columns = ['id', 'name', 'location_id', 'type', 'description', 'image_link'];
-$displayNames = ['ID', 'Name', 'Location ID', 'Type', 'Description', 'Image Link'];
-$tableName = "Locations";
-$actionName = "Add Location";
-$actionName2 = "Edit Location";
-$modalIdContainer = "create-modal-container";
-$method = "POST";
-$id = "create-form";
+    $columns = ['id', 'name', 'location_id', 'type', 'description', 'image_link'];
+    $displayNames = ['ID', 'Name', 'Location ID', 'Type', 'Description', 'Image Link'];
+    $tableName = "Locations";
+    $actionName = "Add Location";
+    $actionName2 = "Edit Location";
+    $modalIdContainer = "create-modal-container";
+    $method = "POST";
+    $id = "create-form";
+    $editSlot = "components.forms.editLocationForm";
 @endphp
 
-<x-admintable
-    :columns="$columns"
-    :displayNames="$displayNames"
-    :rows="$locations"
-    :tableName="$tableName"
-    :editRoute="route('locations.edit', ['id' => '__ID__'])"
-    :updateRoute="route('locations.update', ['id' => '__ID__'])"
-    :deleteRoute="route('locations.destroy', ['id' => '__ID__'])"
-    :actionName2="$actionName2" />
+<x-admintable :columns="$columns" :displayNames="$displayNames" :rows="$locations" :tableName="$tableName"
+    :editRoute="route('locations.edit', ['id' => '__ID__'])" :updateRoute="route('locations.update', ['id' => '__ID__'])"
+    :deleteRoute="route('locations.destroy', ['id' => '__ID__'])" :actionName2="$actionName2" 
+    :editSlot="$editSlot"/>
 
-<x-adminform modalId="addLocationModal" :id="$id" :actionName="$actionName" :actionRoute="route('locations.store')" :modalIdContainer="$modalIdContainer" :method="$method">
+<x-adminform modalId="addLocationModal" :id="$id" :actionName="$actionName" :actionRoute="route('locations.store')"
+    :modalIdContainer="$modalIdContainer" :method="$method">
     <div>
         <label for="name">Name:</label>
         <input type="text" name="name" id="name" required>
@@ -56,8 +53,8 @@ $id = "create-form";
         <textarea name="description" id="description" required></textarea>
     </div>
     <div>
-        <label for="image_link">Image Link:</label>
-        <input type="text" name="image_link" id="image_link">
+        <label for="image">Image:</label>
+        <input type="file" name="image" id="image" accept="image/*" required>
     </div>
     <div class="sub-container">
         <button class="sub-button" type="submit">Submit</button>
@@ -80,8 +77,8 @@ $id = "create-form";
         }
     }
 
-    window.onclick = function(event) {
-        window.onclick = function(event) {
+    window.onclick = function (event) {
+        window.onclick = function (event) {
             const deleteModalContainer = document.getElementById('delete-modal-container');
             const createModalContainer = document.getElementById('create-modal-container');
             const updateModalContainer = document.getElementById('update-modal-container');
