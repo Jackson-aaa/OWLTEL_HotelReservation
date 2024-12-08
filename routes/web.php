@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PaymentDetailController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LocationController;
@@ -24,7 +26,18 @@ Route::middleware([AdminMiddleware::class])->prefix('admin')->group(function () 
     Route::put('/facilitiesUpdate/{id}', [FacilityController::class, 'update'])->name('facilities.update');
     Route::get('/facilities/{id}', [FacilityController::class, 'edit'])->name('facilities.edit');
     Route::delete('/facilitiesDelete/{id}', [FacilityController::class, 'destroy'])->name('facilities.destroy');
+    
+    Route::get('payments', [PaymentController::class, 'index'])->name('payments.index');
+    Route::post('payments', [PaymentController::class, 'store'])->name('payments.store');
+    Route::put('/paymentsUpdate/{id}', [PaymentController::class, 'update'])->name('payments.update');
+    Route::get('/payments/{id}', [PaymentController::class, 'edit'])->name('payments.edit');
+    Route::delete('/paymentsDelete/{id}', [PaymentController::class, 'destroy'])->name('payments.destroy');
 
+    Route::get('paymentdetails', [PaymentDetailController::class, 'index'])->name('paymentdetails.index');
+    Route::post('paymentdetails', [PaymentDetailController::class, 'store'])->name('paymentdetails.store');
+    Route::put('/paymentdetailsUpdate/{id}', [PaymentDetailController::class, 'update'])->name('paymentdetails.update');
+    Route::get('/paymentdetails/{id}', [PaymentDetailController::class, 'edit'])->name('paymentdetails.edit');
+    Route::delete('/paymentdetailsDelete/{id}', [PaymentDetailController::class, 'destroy'])->name('paymentdetails.destroy');
 });
 
 //Routes only for customer

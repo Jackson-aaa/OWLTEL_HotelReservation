@@ -79,6 +79,7 @@
     left: 0;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.5); 
+    z-index: 100;
 }
 
 .modal {
@@ -194,6 +195,14 @@
     margin-top: 20px;
 }
 
+.pagination-container nav {
+    box-shadow: none;
+}
+
+.pagination{
+    z-index: 10;
+}
+
 .pagination .page-link {
     padding: 8px 12px; 
     font-size: 14px;      
@@ -205,7 +214,8 @@
 
 .pagination .page-item.active .page-link {
     background-color: #580000; 
-    color: #fff;     
+    color: #fff;
+    border: none;
 }
 
 .pagination .page-link.disabled {
@@ -243,7 +253,7 @@
     margin-right: 10px; 
 }
 
-.adm-form input[type="text"] {
+.adm-form input[type="text"], .adm-form input[type="number"] {
     border: none;
     border-bottom: 2px solid #000; 
     outline: none;
@@ -251,7 +261,7 @@
     padding: 5px 0; 
 }
 
-.adm-form input[type="text"]:focus {
+.adm-form input[type="text"]:focus, .adm-form input[type="number"]:focus {
     border-bottom: 2px solid #580000;
 }
 
