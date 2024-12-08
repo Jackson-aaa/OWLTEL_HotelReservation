@@ -14,7 +14,8 @@
         <div class="table-name">
             {{ $tableName }}
         </div>
-        <form class="d-flex" role="search" method="GET" action="{{ route(strtolower($tableName) . '.index') }}">
+        <form class="d-flex" role="search" method="GET"
+            action="{{ route(strtolower(str_replace(' ', '', $tableName)) . '.index') }}">
             <input class="form-control input-font-size-xs" name="search" type="search" placeholder="Search"
                 aria-label="Search">
             <button class="btn btn-sm fs-6" type="submit"><i class="fas fa-search"></i></button>
@@ -61,8 +62,8 @@
                                     @method('DELETE')
 
                                     <!-- wtf it says the second argument is error but IT WORKS!
-                                        I spent hours figuring this out, IT'S NOT AN ERROR!
-                                    -->
+                                            I spent hours figuring this out, IT'S NOT AN ERROR!
+                                        -->
                                     <button type="button" onclick="openModal2('deleteModal', {{ $row['id'] }})"
                                         class="btn-delete">Delete</button>
                                 </form>
@@ -72,17 +73,14 @@
                 @endforeach
             </tbody>
         </table>
+        @if ($rows instanceof \Illuminate\Pagination\LengthAwarePaginator)
+            <div class="pagination-container">
+                {{ $rows->links('vendor.pagination.bootstrap-5') }}
+            </div>
+        @endif
     </div>
 
     <x-admindelete modalId="deleteModal" />
-
-
-
-    @if ($rows instanceof \Illuminate\Pagination\LengthAwarePaginator)
-        <div class="pagination-container">
-            {{ $rows->links('vendor.pagination.bootstrap-5') }}
-        </div>
-    @endif
 
     <script>
         function openEditModal(edit, update, rowId) {
@@ -92,26 +90,29 @@
             fetch(editUrl)
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data);
                     const form = document.getElementById('edit-form');
 
                     form.querySelectorAll('input, select, textarea').forEach(input => {
-                        const fieldName = input.name || input.id; // Get name or id of the element
+                        const fieldName = input.name || input.id;
 
                         if (data.hasOwnProperty(fieldName)) {
                             if (input.tagName === 'INPUT') {
-                                // Handle input elements (text, number, etc.)
-                                input.value = data[fieldName];
+                                if (input.type === 'checkbox') {
+                                    input.checked = Boolean(data[fieldName]);
+                                    showExtraFee(input.checked, true);
+                                } else {
+                                    input.value = data[fieldName];
+                                }
                             } else if (input.tagName === 'SELECT') {
-                                // Handle select dropdown elements
-                                input.value = data[fieldName]; // Set selected value
+                                input.value = data[fieldName];
                             } else if (input.tagName === 'TEXTAREA') {
-                                // Handle textarea elements
                                 input.value = data[fieldName];
                             }
                         }
                     });
 
-                    if(data.hasOwnProperty('image_link')) {
+                    if (data.hasOwnProperty('image_link')) {
                         const imagePreview = document.getElementById('image-preview');
                         imagePreview.src = data['image_link'];
                     }

@@ -39,6 +39,10 @@
                     <i class="fa-solid fa-money-bill-transfer"></i>Payments
                 </a>
 
+                <a href="{{ $baseURL . '/paymentdetails' }}" class="{{ Request::is('admin/paymentdetails') ? 'sidebar-active' : '' }}">
+                    <div></div>
+                    <i class="fa-solid fa-dollar-sign"></i>Payment Details
+                </a>
             </div>
         </div>
         <!-- Page Content -->
