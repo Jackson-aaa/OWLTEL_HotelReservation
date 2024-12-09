@@ -1,63 +1,65 @@
-@extends('layouts.main')
+@extends('admin.layout')
 @section('title', 'Admin Hotel Page')
 
 @section('cssStyles')
 <link rel="stylesheet" href="{{asset('css/admin.css')}}">
 @endsection
 
-@section('content')
+@section('page-content')
 
 <div class="add">
     <button class="add-b" onclick="openModal('addLocationModal')">+</button>
 </div>
 
 @php
-$columns = ['id', 'name', 'location_id', 'type', 'description', 'image_link'];
-$displayNames = ['ID', 'Name', 'Location ID', 'Type', 'Description', 'Image Link'];
-$tableName = "Locations";
-$actionName = "Add Location";
-$actionName2 = "Edit Location";
+$columns = ['id', 'name', 'description', 'address', 'initial_price', 'image_link'];
+$displayNames = ['ID', 'Name', 'Description', 'Address', 'Initial Price', 'Image Link'];
+$tableName = "Hotels";
+$actionName = "Add Hotel";
+$actionName2 = "Edit Hotel";
 $modalIdContainer = "create-modal-container";
 $method = "POST";
 $id = "create-form";
+$editSlot = "components.forms.editHotelForm";
+
 @endphp
 
 <x-admintable
     :columns="$columns"
     :displayNames="$displayNames"
-    :rows="$locations"
+    :rows="$hotels"
     :tableName="$tableName"
-    :editRoute="route('locations.edit', ['id' => '__ID__'])"
-    :updateRoute="route('locations.update', ['id' => '__ID__'])"
-    :deleteRoute="route('locations.destroy', ['id' => '__ID__'])"
-    :actionName2="$actionName2" />
+    :editRoute="route('hotels.edit', ['id' => '__ID__'])"
+    :updateRoute="route('hotels.update', ['id' => '__ID__'])"
+    :deleteRoute="route('hotels.destroy', ['id' => '__ID__'])"
+    :actionName2="$actionName2"
+    :editSlot="$editSlot" />
 
-<x-adminform modalId="addLocationModal" :id="$id" :actionName="$actionName" :actionRoute="route('locations.store')" :modalIdContainer="$modalIdContainer" :method="$method">
+<x-adminform modalId="addHotelModal" :id="$id" :actionName="$actionName" :actionRoute="route('hotels.store')" :modalIdContainer="$modalIdContainer" :method="$method">
     <div>
         <label for="name">Name:</label>
         <input type="text" name="name" id="name" required>
-    </div>
-    <div>
-        <label for="location_id">Location ID:</label>
-        <input type="text" name="location_id" id="location_id">
-    </div>
-    <div>
-        <label for="type">Type:</label>
-        <select name="type" id="type" required>
-            <option value="" disabled selected>Select Type</option>
-            <option value="country">Country</option>
-            <option value="region">Region</option>
-            <option value="city">City</option>
-            <option value="place">Place</option>
-        </select>
     </div>
     <div>
         <label for="description">Description:</label>
         <textarea name="description" id="description" required></textarea>
     </div>
     <div>
-        <label for="image_link">Image Link:</label>
-        <input type="text" name="image_link" id="image_link">
+        <label for="address">Address:</label>
+        <textarea name="address" id="address" required></textarea>
+    </div>
+    <div>
+        <label for="location_id">Location ID:</label>
+        <input type="text" name="location_id" id="location_id">
+    </div>
+
+    <div>
+        <label for="image">Image:</label>
+        <input type="file" name="image" id="image" accept="image/*" required>
+    </div>
+    <div>
+        <label for="initial_price">Initial Price:</label>
+        <input type="text" name="initial_price" id="initial_price">
     </div>
     <div class="sub-container">
         <button class="sub-button" type="submit">Submit</button>
@@ -71,7 +73,7 @@ $id = "create-form";
     }
 
     function closeModal(modalId) {
-        if (modalId === 'addLocationModal') {
+        if (modalId === 'addHotelModal') {
             document.getElementById('create-modal-container').style.display = 'none';
         } else if (modalId === 'deleteModal') {
             document.getElementById('delete-modal-container').style.display = 'none';
@@ -88,7 +90,7 @@ $id = "create-form";
             if (event.target === deleteModalContainer) {
                 closeModal('deleteModal');
             } else if (event.target === createModalContainer) {
-                closeModal('addLocationModal');
+                closeModal('addHotelModal');
             } else if (event.target === updateModalContainer) {
                 closeModal('editModal');
             }

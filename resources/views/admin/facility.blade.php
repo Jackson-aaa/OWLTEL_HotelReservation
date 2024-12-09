@@ -12,15 +12,15 @@
 </div>
 
 @php
-    $columns = ['id', 'name', 'icon_link'];
-    $displayNames = ['ID', 'Name', 'Icon'];
-    $tableName = "Facilities";
-    $actionName = "Add Facility";
-    $actionName2 = "Edit Facility";
-    $modalIdContainer = "create-modal-container";
-    $method = "POST";
-    $id = "create-form";
-    $editSlot = "components.forms.editFacilityForm";
+$columns = ['id', 'name', 'icon_link'];
+$displayNames = ['ID', 'Name', 'Icon'];
+$tableName = "Facilities";
+$actionName = "Add Facility";
+$actionName2 = "Edit Facility";
+$modalIdContainer = "create-modal-container";
+$method = "POST";
+$id = "create-form";
+$editSlot = "components.forms.editFacilityForm";
 @endphp
 
 <x-admintable :columns="$columns" :displayNames="$displayNames" :rows="$facilities" :tableName="$tableName"
@@ -43,10 +43,10 @@
 </x-adminform>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function (event) {
+    document.addEventListener('DOMContentLoaded', function(event) {
         const iconFields = ['#icon_link', '#edit-icon_link'];
 
-        iconFields.forEach(function (fieldId) {
+        iconFields.forEach(function(fieldId) {
             const uip = new UniversalIconPicker(fieldId, {
                 iconLibraries: [
                     'font-awesome-regular.min.json',
@@ -60,11 +60,11 @@
                 ],
                 iconLibrariesCss: [],
                 resetSelector: '',
-                onSelect: function (jsonIconData) {
+                onSelect: function(jsonIconData) {
                     console.log(jsonIconData);
                     document.querySelector(fieldId).value = jsonIconData.iconHtml;
                 },
-                onReset: function () {
+                onReset: function() {
                     document.querySelector(fieldId).value = '';
                 }
             });
@@ -87,15 +87,15 @@
         }
     }
 
-    window.onclick = function (event) {
-        window.onclick = function (event) {
+    window.onclick = function(event) {
+        window.onclick = function(event) {
             const deleteModalContainer = document.getElementById('delete-modal-container');
             const createModalContainer = document.getElementById('create-modal-container');
             const updateModalContainer = document.getElementById('update-modal-container');
             if (event.target === deleteModalContainer) {
                 closeModal('deleteModal');
             } else if (event.target === createModalContainer) {
-                closeModal('addLocationModal');
+                closeModal('addFacilityModal');
             } else if (event.target === updateModalContainer) {
                 closeModal('editModal');
             }

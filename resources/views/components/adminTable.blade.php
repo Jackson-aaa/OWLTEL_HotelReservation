@@ -3,10 +3,10 @@
 @endsection
 
 @php
-    $modalIdContainer = "update-modal-container";
-    $method = "POST";
-    $id = "edit-form";
-    $actionRoute = "";
+$modalIdContainer = "update-modal-container";
+$method = "POST";
+$id = "edit-form";
+$actionRoute = "";
 @endphp
 
 <div class="table-wrapper">
@@ -26,63 +26,63 @@
             <thead>
                 <tr>
                     @foreach($displayNames as $displayName)
-                        <th>{{ $displayName }}</th>
+                    <th>{{ $displayName }}</th>
                     @endforeach
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($rows as $row)
-                    <tr>
-                        @foreach($columns as $column)
-                            <td> @if($column === 'image_link' || $column === 'icon_link')
-                                <a href="{{ $row[$column] ?? '#' }}" target="_blank">{{ $row[$column] ?? 'N/A' }}</a>
-                            @else
-                                {{ $row[$column] ?? 'N/A' }}
-                            @endif
-                            </td>
-                        @endforeach
-                        <td>
-                            <div class="action">
-                                <a href="javascript:void(0);"
-                                    onclick="openEditModal('{{ $editRoute }}', '{{ $updateRoute }}', {{ $row['id'] }})"
-                                    class="btn-edit">Edit</a>
+                <tr>
+                    @foreach($columns as $column)
+                    <td> @if($column === 'image_link' || $column === 'icon_link')
+                        <a href="{{ $row[$column] ?? '#' }}" target="_blank">{{ $row[$column] ?? 'N/A' }}</a>
+                        @else
+                        {{ $row[$column] ?? 'N/A' }}
+                        @endif
+                    </td>
+                    @endforeach
+                    <td>
+                        <div class="action">
+                            <a href="javascript:void(0);"
+                                onclick="openEditModal('{{ $editRoute }}', '{{ $updateRoute }}', {{ $row['id'] }})"
+                                class="btn-edit">Edit</a>
 
-                                <x-adminform modalId="editModal" :id="$id" :actionName="$actionName2"
-                                    :modalIdContainer="$modalIdContainer" :method="$method" :actionRoute="$actionRoute">
-                                    @method('PUT')
-                                    @include($editSlot)
-                                </x-adminform>
+                            <x-adminform modalId="editModal" :id="$id" :actionName="$actionName2"
+                                :modalIdContainer="$modalIdContainer" :method="$method" :actionRoute="$actionRoute">
+                                @method('PUT')
+                                @include($editSlot)
+                            </x-adminform>
 
-                                <form id="deleteForm-{{ $row['id'] }}"
-                                    action="{{ str_replace('__ID__', $row['id'], $deleteRoute) }}" method="POST"
-                                    style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
+                            <form id="deleteForm-{{ $row['id'] }}"
+                                action="{{ str_replace('__ID__', $row['id'], $deleteRoute) }}" method="POST"
+                                style="display:inline;">
+                                @csrf
+                                @method('DELETE')
 
-                                    <!-- wtf it says the second argument is error but IT WORKS!
+                                <!-- wtf it says the second argument is error but IT WORKS!
                                         I spent hours figuring this out, IT'S NOT AN ERROR!
                                     -->
-                                    <button type="button" onclick="openModal2('deleteModal', {{ $row['id'] }})"
-                                        class="btn-delete">Delete</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
+                                <button type="button" onclick="openModal2('deleteModal', {{ $row['id'] }})"
+                                    class="btn-delete">Delete</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
+    @if ($rows instanceof \Illuminate\Pagination\LengthAwarePaginator)
+    <div class="pagination-container">
+        {{ $rows->links('vendor.pagination.bootstrap-5') }}
+    </div>
+    @endif
+
 
     <x-admindelete modalId="deleteModal" />
 
 
-
-    @if ($rows instanceof \Illuminate\Pagination\LengthAwarePaginator)
-        <div class="pagination-container">
-            {{ $rows->links('vendor.pagination.bootstrap-5') }}
-        </div>
-    @endif
 
     <script>
         function openEditModal(edit, update, rowId) {
@@ -111,7 +111,7 @@
                         }
                     });
 
-                    if(data.hasOwnProperty('image_link')) {
+                    if (data.hasOwnProperty('image_link')) {
                         const imagePreview = document.getElementById('image-preview');
                         imagePreview.src = data['image_link'];
                     }

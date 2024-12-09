@@ -84,12 +84,13 @@
 .modal {
     display: block;
     width: 50%;
-	max-height: fit-content;
+	max-height: 60%;
     background: white;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     position: relative;
+    overflow-y: auto;
 }
 
 .modal-content {
@@ -192,6 +193,11 @@
     justify-content: flex-end; 
     align-items: center;
     margin-top: 20px;
+    box-shadow: none !important;
+}
+
+.pagination{
+    box-shadow: none !important;
 }
 
 .pagination .page-link {
@@ -201,6 +207,7 @@
     border-radius: 8px;  
     margin: 0 5px;       
     text-decoration: none;  
+    box-shadow: none !important; 
 }
 
 .pagination .page-item.active .page-link {
