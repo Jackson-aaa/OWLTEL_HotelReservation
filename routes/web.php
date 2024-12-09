@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PaymentDetailController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\LocationController;
@@ -31,6 +33,12 @@ Route::middleware([AdminMiddleware::class])->prefix('admin')->group(function () 
     Route::put('/hotelsUpdate/{id}', [HotelController::class, 'update'])->name('hotels.update');
     Route::get('/hotels/{id}', [HotelController::class, 'edit'])->name('hotels.edit');
     Route::delete('/hotelsDelete/{id}', [HotelController::class, 'destroy'])->name('hotels.destroy');
+
+    Route::get('paymentdetails', [PaymentDetailController::class, 'index'])->name('paymentdetails.index');
+    Route::post('paymentdetails', [PaymentDetailController::class, 'store'])->name('paymentdetails.store');
+    Route::put('/paymentdetailsUpdate/{id}', [PaymentDetailController::class, 'update'])->name('paymentdetails.update');
+    Route::get('/paymentdetails/{id}', [PaymentDetailController::class, 'edit'])->name('paymentdetails.edit');
+    Route::delete('/paymentdetailsDelete/{id}', [PaymentDetailController::class, 'destroy'])->name('paymentdetails.destroy');
 });
 
 //Routes only for customer
