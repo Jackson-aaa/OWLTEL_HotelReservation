@@ -31,9 +31,11 @@ class HotelController extends Controller
         try {
             $request->validate([
                 'name' => 'required|string|max:255',
-                'location_id' => 'nullable|string|max:255',
-                'type' => 'required|string|max:255',
                 'description' => 'required|string',
+                'address' => 'required|string',
+                'location_id' => 'nullable|string|max:255',
+                'initial_price' => 'required|decimal',
+
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:20480'
             ]);
 
@@ -43,9 +45,9 @@ class HotelController extends Controller
 
             Location::create([
                 'name' => $request['name'],
-                'location_id' => $request['location_id'],
-                'type' => $request['type'],
-                'description' => $request['description'],
+                'description' => $request['location_id'],
+                'address' => $request['type'],
+                'initial_price' => $request['description'],
                 'image_link' => asset('storage') . '/' . $imagePath
             ]);
 
@@ -58,7 +60,7 @@ class HotelController extends Controller
 
     public function edit($id)
     {
-        $location = Location::findOrFail($id);
+        $location = Hotel::findOrFail($id);
 
         // return view('admin.edit-location', compact('location'));
         return response()->json($location);
@@ -82,8 +84,8 @@ class HotelController extends Controller
         }
 
         try {
-            $location = Location::findOrFail($id);
-            $location->update($request->all());
+            $hotel = Hotel::findOrFail($id);
+            $hotel->update($request->all());
 
             // Capture the 'page' parameter from the request and redirect back with it
             $page = $request->input('page', 1); // Default to 1 if no page is specified
@@ -105,16 +107,13 @@ class HotelController extends Controller
     public function destroy($id)
     {
         try {
-            $location = Location::findOrFail($id);
-            $location->delete();
+            $hotel = Hotel::findOrFail($id);
+            $hotel->delete();
 
-            return redirect()->route('locations.index')->with('success', 'Location deleted successfully!');
+            return redirect()->route('hotels.index')->with('success', 'Location deleted successfully!');
         } catch (\Exception $e) {
             \Log::error('Error deleting location: ' . $e->getMessage());
             return back()->withErrors(['error' => 'Could not delete location.']);
         }
     }
-
-
-    public function search(Request $request) {}
 }

@@ -61,23 +61,18 @@ $actionRoute = "";
                                 @csrf
                                 @method('DELETE')
 
-                                    <!-- wtf it says the second argument is error but IT WORKS!
+                                <!-- wtf it says the second argument is error but IT WORKS!
                                             I spent hours figuring this out, IT'S NOT AN ERROR!
                                         -->
-                                    <button type="button" onclick="openModal2('deleteModal', {{ $row['id'] }})"
-                                        class="btn-delete">Delete</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
+                                <button type="button" onclick="openModal2('deleteModal', {{ $row['id'] }})"
+                                    class="btn-delete">Delete</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
                 @endforeach
             </tbody>
         </table>
-        @if ($rows instanceof \Illuminate\Pagination\LengthAwarePaginator)
-            <div class="pagination-container">
-                {{ $rows->links('vendor.pagination.bootstrap-5') }}
-            </div>
-        @endif
     </div>
     @if ($rows instanceof \Illuminate\Pagination\LengthAwarePaginator)
     <div class="pagination-container">
