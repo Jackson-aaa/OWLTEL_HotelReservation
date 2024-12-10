@@ -21,7 +21,6 @@ $actionRoute = "";
             <button class="btn btn-sm fs-6" type="submit"><i class="fas fa-search"></i></button>
         </form>
     </div>
-
     <div class="table-container">
         <table class="table">
             <thead>

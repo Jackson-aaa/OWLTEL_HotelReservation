@@ -96,6 +96,7 @@ class LocationController extends Controller
             return redirect()
                 ->route('locations.index', ['page' => $page])
                 ->with('success', 'Location updated successfully!');
+            // return response()->json($location);
         } catch (\Exception $e) {
             \Log::error('Error updating location: ' . $e->getMessage());
 

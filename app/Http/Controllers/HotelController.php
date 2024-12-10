@@ -19,7 +19,9 @@ class HotelController extends Controller
                 ->orWhere('description', 'like', '%' . $search . '%');
         }
 
-        $hotels = $query->paginate(5);
+        $hotels = $query->orderBy('name', 'asc')
+            ->orderBy('id', 'asc')
+            ->paginate(5);
 
         $locations = Location::get();
 
@@ -49,7 +51,6 @@ class HotelController extends Controller
                 'address' => 'required|string',
                 'location_id' => 'required|string|max:255',
                 'initial_price' => 'required|numeric',
-
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:20480'
             ]);
 
@@ -89,7 +90,6 @@ class HotelController extends Controller
             'address' => 'required|string',
             'location_id' => 'required|string|max:255',
             'initial_price' => 'required|numeric',
-
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:20480'
         ]);
 
@@ -100,6 +100,7 @@ class HotelController extends Controller
             $request['image_link'] = asset('storage') . '/' . $imagePath;
         }
 
+
         try {
             $hotel = Hotel::findOrFail($id);
             $hotel->update($request->all());
@@ -107,15 +108,17 @@ class HotelController extends Controller
             // Capture the 'page' parameter from the request and redirect back with it
             $page = $request->input('page', 1); // Default to 1 if no page is specified
 
-            return redirect()
-                ->route('hotels.index', ['page' => $page])
-                ->with('success', 'Hotel updated successfully!');
+            // return redirect()
+            //     ->route('hotels.index', ['page' => $page])
+            //     ->with('success', 'Hotel updated successfully!');
+            return response()->json($hotel);
         } catch (\Exception $e) {
             \Log::error('Error updating hotel: ' . $e->getMessage());
 
-            return back()
-                ->withInput()
-                ->withErrors(['error' => 'Could not update hotel.']);
+            // return back()
+            //     ->withInput()
+            //     ->withErrors(['error' => 'Could not update hotel.']);
+            return "bro";
         }
     }
 

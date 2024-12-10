@@ -17,13 +17,12 @@ class PaymentDetailController extends Controller
         if ($request->has('search') && $request->search !== '') {
             $search = $request->search;
             $query->where('name', 'like', '%' . $search . '%')
-                  ->orWhere('description', 'like', '%' . $search . '%')
-                  ->orWhere('payment.name', 'like', '%' . $search . '%');
+                ->orWhere('description', 'like', '%' . $search . '%')
+                ->orWhere('payment.name', 'like', '%' . $search . '%');
         }
 
-        $paymentdetails = $query->orderBy('payment_id', 'asc')
-                                ->orderBy('id', 'asc')
-                                ->paginate(5);
+        $paymentdetails = $query->orderBy('name', 'asc')
+            ->paginate(5);
 
         $payments = Payment::get();
         $paymentdetails->getCollection()->transform(function ($item) use ($payments) {
@@ -92,7 +91,7 @@ class PaymentDetailController extends Controller
 
     public function edit($id)
     {
-        
+
         $paymentdetail = PaymentDetail::with('extrafees')->findOrFail($id);
 
         $extraFee = $paymentdetail->extrafees->first();
@@ -121,7 +120,7 @@ class PaymentDetailController extends Controller
                 'payment' => 'required|string|max:255',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:20480'
             ]);
-    
+
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
                 $imageName = $request->name . time() . '.' . $image->getClientOriginalExtension();

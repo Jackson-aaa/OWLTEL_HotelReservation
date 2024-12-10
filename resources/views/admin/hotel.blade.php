@@ -8,7 +8,7 @@
 @section('page-content')
 
 <div class="add">
-    <button class="add-b" onclick="openModal('addLocationModal')"><i class="fa-solid fa-plus"></i></button>
+    <button class="add-b" onclick="openModal('addHotelModal')"><i class="fa-solid fa-plus"></i></button>
 </div>
 
 @php
