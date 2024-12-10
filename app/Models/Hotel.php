@@ -16,6 +16,7 @@ class Hotel extends Model
         'description',
         'address',
         'description',
+        'location_id',
         'initial_price',
         'image_link'
     ];

@@ -8,7 +8,7 @@
 @section('page-content')
 
 <div class="add">
-    <button class="add-b" onclick="openModal('addLocationModal')">+</button>
+    <button class="add-b" onclick="openModal('addLocationModal')"><i class="fa-solid fa-plus"></i></button>
 </div>
 
 @php
@@ -50,7 +50,12 @@ $editSlot = "components.forms.editHotelForm";
     </div>
     <div>
         <label for="location_id">Location ID:</label>
-        <input type="text" name="location_id" id="location_id">
+        <select name="location_id" id="location_id" required>
+            <option value="" disabled selected>Select Location ID</option>
+            @foreach ($locations as $item)
+            <option value="{{$item->id}}">{{$item->name}}</option>
+            @endforeach
+        </select>
     </div>
 
     <div>

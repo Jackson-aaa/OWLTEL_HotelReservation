@@ -7,6 +7,7 @@ use App\Models\Location;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class LocationController extends Controller
 {
@@ -40,7 +41,7 @@ class LocationController extends Controller
                 'description' => 'required|string',
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:20480'
             ]);
-    
+
             $image = $request->file('image');
             $imageName = $request->name . time() . '.' . $image->getClientOriginalExtension();
             $imagePath = $image->storeAs('img/locations', $imageName);
@@ -120,8 +121,5 @@ class LocationController extends Controller
     }
 
 
-    public function search(Request $request)
-    {
-        
-    }
+    public function search(Request $request) {}
 }

@@ -1,32 +1,32 @@
 <div>
-    <label for=" name">Name:</label>
-    <input type="text" name="name" id="edit-name" required>
-</div>
-<div>
-    <label for="location_id">Location ID:</label>
-    <input type="text" name="location_id" id="edit-location_id">
-</div>
-<div>
-    <label for="type">Type:</label>
-    <select name="type" id="edit-type" required>
-        <option value="" disabled>Select Type</option>
-        <option value="country">Country</option>
-        <option value="region">Region</option>
-        <option value="city">City</option>
-        <option value="place">Place</option>
-    </select>
+    <label for="name">Name:</label>
+    <input type="text" name="name" id="name" required>
 </div>
 <div>
     <label for="description">Description:</label>
-    <textarea name="description" id="edit-description" required></textarea>
+    <textarea name="description" id="description" required></textarea>
 </div>
 <div>
-    <label for="image">Image:</label>
-    <input type="file" name="image" id="edit-image" accept="image/*">
+    <label for="address">Address:</label>
+    <textarea name="address" id="address" required></textarea>
 </div>
+<div>
+    <label for="location_id">Location ID:</label>
+    <select name="location_id" id="location_id" required>
+        <option value="" disabled selected>Select Location ID</option>
+        @foreach ($row['location_id'] as $item)
+        <option value="{{$item->id}}">{{$item->name}}</option>
+        @endforeach
+    </select>
+</div>
+
 <div>
     <label for="image-preview">Current Image:</label>
     <img id="image-preview" src="" alt="Current Image" width="100" style="display: block;">
+</div>
+<div>
+    <label for="initial_price">Initial Price:</label>
+    <input type="text" name="initial_price" id="initial_price">
 </div>
 <div class="sub-container">
     <button class="sub-button" type="submit">Submit</button>

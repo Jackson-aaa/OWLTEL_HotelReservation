@@ -4,25 +4,39 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Hotel;
+use App\Models\Location;
 
 class HotelController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Hotel::query();
+        $query = Hotel::with('location');
 
         if ($request->has('search') && $request->search !== '') {
             $search = $request->search;
             $query->where('name', 'like', '%' . $search . '%')
-                ->orWhere('type', 'like', '%' . $search . '%')
+                ->orWhere('address', 'like', '%' . $search . '%')
                 ->orWhere('description', 'like', '%' . $search . '%');
         }
 
         $hotels = $query->paginate(5);
-        return view('admin.hotel', compact('hotels'));
+
+        $locations = Location::get();
+
+        $hotels->getCollection()->transform(function ($item) use ($locations) {
+            return [
+                'id' => $item->id,
+                'name' => $item->name,
+                'description' => $item->description,
+                'address' => $item->address,
+                'initial_price' => $item->initial_price,
+                'image_link' => $item->image_link,
+                'locations' => $locations
+            ];
+        });
+        return view('admin.hotel', compact('hotels', 'locations'));
     }
 
-    public $selectedLocation;
     public function store(Request $request)
     {
 
@@ -33,8 +47,8 @@ class HotelController extends Controller
                 'name' => 'required|string|max:255',
                 'description' => 'required|string',
                 'address' => 'required|string',
-                'location_id' => 'nullable|string|max:255',
-                'initial_price' => 'required|decimal',
+                'location_id' => 'required|string|max:255',
+                'initial_price' => 'required|numeric',
 
                 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:20480'
             ]);
@@ -43,37 +57,40 @@ class HotelController extends Controller
             $imageName = $request->name . time() . '.' . $image->getClientOriginalExtension();
             $imagePath = $image->storeAs('img/locations', $imageName);
 
-            Location::create([
+            Hotel::create([
                 'name' => $request['name'],
-                'description' => $request['location_id'],
-                'address' => $request['type'],
-                'initial_price' => $request['description'],
+                'description' => $request['description'],
+                'address' => $request['address'],
+                'location_id' => $request['location_id'],
+                'initial_price' => $request['initial_price'],
                 'image_link' => asset('storage') . '/' . $imagePath
             ]);
 
-            return redirect()->route('locations.index')->with('success', 'Location added successfully!');
+            return redirect()->route('hotels.index')->with('success', 'Hotel added successfully!');
         } catch (\Exception $e) {
-            \Log::error('Error creating location: ' . $e->getMessage());
-            return back()->withErrors(['error' => 'Could not add location.']);
+            \Log::error('Error creating hotel: ' . $e->getMessage());
+            return back()->withErrors(['error' => 'Could not add hotel.']);
         }
     }
 
     public function edit($id)
     {
-        $location = Hotel::findOrFail($id);
+        $hotel = Hotel::findOrFail($id);
 
         // return view('admin.edit-location', compact('location'));
-        return response()->json($location);
+        return response()->json($hotel);
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'location_id' => 'nullable|string|max:255',
-            'type' => 'required|string|max:255',
             'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:20480'
+            'address' => 'required|string',
+            'location_id' => 'required|string|max:255',
+            'initial_price' => 'required|numeric',
+
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:20480'
         ]);
 
         if ($request->hasFile('image')) {
@@ -91,14 +108,14 @@ class HotelController extends Controller
             $page = $request->input('page', 1); // Default to 1 if no page is specified
 
             return redirect()
-                ->route('locations.index', ['page' => $page])
-                ->with('success', 'Location updated successfully!');
+                ->route('hotels.index', ['page' => $page])
+                ->with('success', 'Hotel updated successfully!');
         } catch (\Exception $e) {
-            \Log::error('Error updating location: ' . $e->getMessage());
+            \Log::error('Error updating hotel: ' . $e->getMessage());
 
             return back()
                 ->withInput()
-                ->withErrors(['error' => 'Could not update location.']);
+                ->withErrors(['error' => 'Could not update hotel.']);
         }
     }
 
@@ -110,10 +127,10 @@ class HotelController extends Controller
             $hotel = Hotel::findOrFail($id);
             $hotel->delete();
 
-            return redirect()->route('hotels.index')->with('success', 'Location deleted successfully!');
+            return redirect()->route('hotels.index')->with('success', 'Hotel deleted successfully!');
         } catch (\Exception $e) {
-            \Log::error('Error deleting location: ' . $e->getMessage());
-            return back()->withErrors(['error' => 'Could not delete location.']);
+            \Log::error('Error deleting hotel: ' . $e->getMessage());
+            return back()->withErrors(['error' => 'Could not delete hotel.']);
         }
     }
 }
