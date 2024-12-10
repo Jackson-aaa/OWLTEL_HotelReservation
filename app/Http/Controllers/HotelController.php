@@ -84,41 +84,41 @@ class HotelController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'address' => 'required|string',
-            'location_id' => 'required|string|max:255',
-            'initial_price' => 'required|numeric',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:20480'
-        ]);
-
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = $request->name . time() . '.' . $image->getClientOriginalExtension();
-            $imagePath = $image->storeAs('img/locations', $imageName);
-            $request['image_link'] = asset('storage') . '/' . $imagePath;
-        }
-
-
+        \Log::info($request->all());
         try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'description' => 'required|string',
+                'address' => 'required|string',
+                'location_id' => 'required|string|max:255',
+                'initial_price' => 'required|numeric',
+                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:20480'
+            ]);
+    
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imageName = $request->name . time() . '.' . $image->getClientOriginalExtension();
+                $imagePath = $image->storeAs('img/locations', $imageName);
+                $request['image_link'] = asset('storage') . '/' . $imagePath;
+            }
+
             $hotel = Hotel::findOrFail($id);
             $hotel->update($request->all());
 
             // Capture the 'page' parameter from the request and redirect back with it
             $page = $request->input('page', 1); // Default to 1 if no page is specified
 
-            // return redirect()
-            //     ->route('hotels.index', ['page' => $page])
-            //     ->with('success', 'Hotel updated successfully!');
-            return response()->json($hotel);
+            return redirect()
+                ->route('hotels.index', ['page' => $page])
+                ->with('success', 'Hotel updated successfully!');
+            // return response()->json($hotel);
         } catch (\Exception $e) {
             \Log::error('Error updating hotel: ' . $e->getMessage());
 
-            // return back()
-            //     ->withInput()
-            //     ->withErrors(['error' => 'Could not update hotel.']);
-            return "bro";
+            return back()
+                ->withInput()
+                ->withErrors(['error' => 'Could not update hotel.']);
+            // return "bro";
         }
     }
 
