@@ -94,7 +94,7 @@ class HotelController extends Controller
                 'initial_price' => 'required|numeric',
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:20480'
             ]);
-    
+
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
                 $imageName = $request->name . time() . '.' . $image->getClientOriginalExtension();

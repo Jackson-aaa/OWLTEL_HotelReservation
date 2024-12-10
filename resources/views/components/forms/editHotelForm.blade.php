@@ -19,7 +19,10 @@
         @endforeach
     </select>
 </div>
-
+<div>
+    <label for="image">Image:</label>
+    <input type="file" name="image" id="edit-image" accept="image/*">
+</div>
 <div>
     <label for="image-preview">Current Image:</label>
     <img id="image-preview" src="" alt="Current Image" width="100" style="display: block;">
