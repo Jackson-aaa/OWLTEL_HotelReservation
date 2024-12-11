@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Hotel;
 use App\Models\Location;
+use Illuminate\Support\Facades\Storage;
 
 class HotelController extends Controller
 {
@@ -56,7 +57,8 @@ class HotelController extends Controller
 
             $image = $request->file('image');
             $imageName = $request->name . time() . '.' . $image->getClientOriginalExtension();
-            $imagePath = $image->storeAs('img/locations', $imageName);
+            $imagePath = Storage::disk('azure')->putFileAs('img/hotels', $image, $imageName);
+            $request['image_link'] = Storage::disk('azure')->url($imagePath);
 
             Hotel::create([
                 'name' => $request['name'],
@@ -64,7 +66,7 @@ class HotelController extends Controller
                 'address' => $request['address'],
                 'location_id' => $request['location_id'],
                 'initial_price' => $request['initial_price'],
-                'image_link' => asset('storage') . '/' . $imagePath
+                'image_link' => $request['image_link']
             ]);
 
             return redirect()->route('hotels.index')->with('success', 'Hotel added successfully!');
@@ -98,8 +100,8 @@ class HotelController extends Controller
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
                 $imageName = $request->name . time() . '.' . $image->getClientOriginalExtension();
-                $imagePath = $image->storeAs('img/locations', $imageName);
-                $request['image_link'] = asset('storage') . '/' . $imagePath;
+                $imagePath = Storage::disk('azure')->putFileAs('img/hotels', $image, $imageName);
+                $request['image_link'] = Storage::disk('azure')->url($imagePath);
             }
 
             $hotel = Hotel::findOrFail($id);

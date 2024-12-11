@@ -7,6 +7,7 @@ use App\Models\Payment;
 use App\Models\PaymentDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class PaymentDetailController extends Controller
 {
@@ -58,13 +59,14 @@ class PaymentDetailController extends Controller
 
             $image = $request->file('image');
             $imageName = $request->name . time() . '.' . $image->getClientOriginalExtension();
-            $imagePath = $image->storeAs('img/paymentdetails', $imageName);
+            $imagePath = Storage::disk('azure')->putFileAs('img/paymentdetails', $image, $imageName);
+            $request['icon_link'] = Storage::disk('azure')->url($imagePath);
 
             $paymentdetail = PaymentDetail::create([
                 'name' => $request['name'],
                 'description' => $request['description'],
                 'payment_id' => $request['payment'],
-                'icon_link' => asset('storage') . '/' . $imagePath
+                'icon_link' => $request['icon_link']
             ]);
 
             if ($request->has('extra_fee') && $request->extra_fee === 'on') {
@@ -124,8 +126,8 @@ class PaymentDetailController extends Controller
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
                 $imageName = $request->name . time() . '.' . $image->getClientOriginalExtension();
-                $imagePath = $image->storeAs('img/paymentdetails', $imageName);
-                $request['image_link'] = asset('storage') . '/' . $imagePath;
+                $imagePath = Storage::disk('azure')->putFileAs('img/paymentdetails', $image, $imageName);
+                $request['image_link'] = Storage::disk('azure')->url($imagePath);
             }
 
             $paymentdetails = PaymentDetail::with('extrafees')->findOrFail($id);

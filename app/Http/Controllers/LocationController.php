@@ -44,14 +44,15 @@ class LocationController extends Controller
 
             $image = $request->file('image');
             $imageName = $request->name . time() . '.' . $image->getClientOriginalExtension();
-            $imagePath = $image->storeAs('img/locations', $imageName);
+            $imagePath = Storage::disk('azure')->putFileAs('img/locations', $image, $imageName);
+            $request['image_link'] = Storage::disk('azure')->url($imagePath);
 
             Location::create([
                 'name' => $request['name'],
                 'location_id' => $request['location_id'],
                 'type' => $request['type'],
                 'description' => $request['description'],
-                'image_link' => asset('storage') . '/' . $imagePath
+                'image_link' => $request['image_link']
             ]);
 
             return redirect()->route('locations.index')->with('success', 'Location added successfully!');
@@ -82,8 +83,12 @@ class LocationController extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = $request->name . time() . '.' . $image->getClientOriginalExtension();
-            $imagePath = $image->storeAs('img/locations', $imageName);
-            $request['image_link'] = asset('storage') . '/' . $imagePath;
+            
+            // Store the file in Azure Blob Storage
+            $imagePath = Storage::disk('azure')->putFileAs('img/locations', $image, $imageName);
+        
+            // Generate the full URL to the stored image
+            $request['image_link'] = Storage::disk('azure')->url($imagePath);
         }
 
         try {
