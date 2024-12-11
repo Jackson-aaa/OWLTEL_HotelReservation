@@ -11,4 +11,8 @@ class Hotel extends Model
     public function getBooking(){
         return $this->hasMany(Booking::class, 'hotel_id', 'id');
     }
+
+    public function getLocation(){
+        return $this->hasOne(Booking::class, 'location_id', 'id');
+    }
 }
