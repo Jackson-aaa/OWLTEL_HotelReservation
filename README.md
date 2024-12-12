@@ -36,7 +36,3 @@ Rollback migration
 Seed database
 
 ``php artisan db:seed``
-
-Create Symbolic Link
-
-``php artisan storage:link``

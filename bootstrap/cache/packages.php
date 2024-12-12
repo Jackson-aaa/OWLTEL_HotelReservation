@@ -13,13 +13,6 @@
       0 => 'Laravel\\Tinker\\TinkerServiceProvider',
     ),
   ),
-  'matthewbdaly/laravel-azure-storage' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Matthewbdaly\\LaravelAzureStorage\\AzureStorageServiceProvider',
-    ),
-  ),
   'nesbot/carbon' => 
   array (
     'providers' => 

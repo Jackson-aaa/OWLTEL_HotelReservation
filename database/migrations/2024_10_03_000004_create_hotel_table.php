@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string("icon_link")->nullable();
             $table->timestamps();
         });
-
+        
         Schema::create("hotel_facilities", function (Blueprint $table) {
             $table->id();
             $table->foreignId("hotel_id")->constrained();
