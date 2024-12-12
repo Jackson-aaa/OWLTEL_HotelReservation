@@ -87,6 +87,7 @@ nav {
     height: 34px;
     box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 3px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
     border-radius: 5px;
+    margin: unset;
 }
 
 .search-form input {
@@ -95,7 +96,6 @@ nav {
     text-align: center;
     font-size: 15px;
     padding-inline: 10px;
-    
 }
 
 .search-form input:focus {

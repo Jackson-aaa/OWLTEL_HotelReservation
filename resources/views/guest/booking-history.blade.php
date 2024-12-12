@@ -1,7 +1,5 @@
 @extends('layouts.main')
 @section('title', 'Owltel')
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 @section('content')
 <style>
     .booking-hist-div{
@@ -34,7 +32,7 @@
     }
 </style>
 
-<div class="w-100 h-100">
+<div class="w-100 h-100" style="margin: 20px 10px 10px 20px;">
     <div class="booking-hist-div d-flex w-screen h-screen justify-content-center w-100">
         <h2 class="text-center">Booking History</h2>
     </div>
