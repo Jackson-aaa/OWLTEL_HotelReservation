@@ -4,6 +4,8 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PaymentDetailController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\HotelController;
@@ -49,9 +51,8 @@ Route::middleware([AdminMiddleware::class])->prefix('admin')->group(function () 
 
 //Routes only for customer
 Route::middleware([CustomerMiddleware::class])->prefix('/')->group(function () {
-    Route::get('/', function () {
-        return view('guest.dashboard');
-    })->name('dashboard');
+    Route::get('/', [DashboardController::class, 'showDashboard']);
+    Route::get('/booking-history', [BookingController::class, 'showBookingHistory']);
 });
 
 //Global routes

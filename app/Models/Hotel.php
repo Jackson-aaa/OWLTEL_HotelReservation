@@ -9,7 +9,7 @@ use App\Models\Location;
 class Hotel extends Model
 {
     use HasFactory;
-
+  
     protected $table = 'hotels';
     protected $fillable = [
         'name',
@@ -26,5 +26,10 @@ class Hotel extends Model
     public function location()
     {
         return $this->belongsTo(Location::class);
+    }
+  
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
     }
 }
