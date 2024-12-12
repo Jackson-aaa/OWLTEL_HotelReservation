@@ -14,8 +14,8 @@ use App\Http\Middleware\CustomerMiddleware;
 
 //Routes only for admin
 Route::middleware([AdminMiddleware::class])->prefix('admin')->group(function () {
-    Route::get('/', function () {
-        return view('admin.layout');
+    Route::get('/', action: function () {
+        return redirect()->route('hotels.index');
     });
 
     Route::get('locations', [LocationController::class, 'index'])->name('locations.index');
