@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Booking extends Model
 {
     use HasFactory;
-    public function getHotel(){
-        return $this->belongsTo(Hotel::class, 'hotel_id', 'id');
+    public function hotel(){
+        return $this->belongsTo(Hotel::class);
     }
 }
