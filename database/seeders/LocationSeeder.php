@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Faker\Factory as Faker;
 use Illuminate\Support\Facades\DB;
 
 class LocationSeeder extends Seeder
@@ -13,14 +14,35 @@ class LocationSeeder extends Seeder
      */
     public function run(): void
     {
-        // $locationTypes = ['Country', 'City', 'Province']
-        for($i=0; $i<5; $i++){
+        $faker = Faker::create();
+
+        for ($i = 1; $i <= 20; $i++) {
+            $type = $faker->randomElement(['country', 'region', 'city', 'place']);
+
+            switch ($type) {
+                case 'country':
+                    $name = $faker->country;
+                    break;
+                case 'region':
+                    $name = $faker->state;
+                    break;
+                case 'city':
+                    $name = $faker->city;
+                    break;
+                case 'place':
+                    $name = $faker->address;
+                    break;
+            }
+
+            $location_id = $i > 1 ? $faker->optional()->numberBetween(1, $i - 1) : NULL;
+
             DB::table('locations')->insert([
-                'name' => fake()->city(),
-                'location_id' => 1,
-                'type' => 'City',
-                'description' => fake()->text(200),
-                'image_link' => fake()->imageUrl(800, 800, 'city', true, 'Location'),
+                'name' => $name,
+                'location_id' => $location_id,
+                'type' => $type,
+                'description' => $faker->text(),
+                'image_link' => $faker->imageUrl(),
+                'created_at' => now(),
             ]);
         }
     }

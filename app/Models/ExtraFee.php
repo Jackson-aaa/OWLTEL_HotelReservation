@@ -5,18 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Location extends Model
+class ExtraFee extends Model
 {
     use HasFactory;
 
-    protected $table = 'locations';
+    protected $table = 'extra_fees';
+
     protected $fillable = [
+        'percentage',
         'name',
-        'location_id',
-        'type',
-        'description',
-        'image_link'
+        'payment_detail_id'
     ];
 
     public $timestamps = true;
+
+    public function paymentDetail()
+    {
+        return $this->belongsTo(PaymentDetail::class);
+    }
 }

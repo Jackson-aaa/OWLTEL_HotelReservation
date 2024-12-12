@@ -5,18 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Location extends Model
+class Payment extends Model
 {
     use HasFactory;
 
-    protected $table = 'locations';
+    protected $table = 'payments';
+
     protected $fillable = [
-        'name',
-        'location_id',
-        'type',
-        'description',
-        'image_link'
+        'name'
     ];
 
     public $timestamps = true;
+
+    public function paymentDetails()
+    {
+        return $this->hasMany(PaymentDetail::class);
+    }
 }
