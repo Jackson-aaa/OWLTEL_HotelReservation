@@ -52,7 +52,7 @@ Route::middleware([AdminMiddleware::class])->prefix('admin')->group(function () 
 //Routes only for customer
 Route::middleware([CustomerMiddleware::class])->prefix('/')->group(function () {
     Route::get('/', [DashboardController::class, 'showDashboard']);
-    Route::get('/booking-history', [BookingController::class, 'showBookingHistory']);
+    Route::get('/booking-history', [BookingController::class, 'showBookingHistory'])->name('bookinghistory');
 });
 
 //Global routes
