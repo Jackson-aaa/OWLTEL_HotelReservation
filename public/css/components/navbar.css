@@ -14,7 +14,7 @@ nav {
     margin-block: 18px;
 }
 
-.auth-button a {
+.auth-button a, .btn-group a {
     padding: 5px 12px;
     font-size: medium;
     font-weight: 700;
@@ -31,7 +31,7 @@ nav {
     background-color: #580000;
 }
 
-.auth-button #sign-out {
+.auth-button #sign-out, .btn-group a {
     color: #430000;
 }
 
