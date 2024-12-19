@@ -9,7 +9,7 @@ use App\Models\Hotel;
 class BookingController extends Controller
 {
     public function showBookingHistory(){
-        $bookings = Booking::with('getHotel')->get();
+        $bookings = Booking::with('hotel')->get();
         return view('guest.booking-history')
             ->with('bookings', $bookings);
     }
