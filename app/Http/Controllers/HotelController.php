@@ -138,4 +138,10 @@ class HotelController extends Controller
             return back()->withErrors(['error' => 'Could not delete hotel.']);
         }
     }
+
+    public function showHotelDescription(Request $request)
+    {
+        $hotel = Hotel::findOrFail($request->id);
+        return view("guest.hotel-description")->with("hotel", $hotel);
+    }
 }

@@ -53,6 +53,7 @@ Route::middleware([AdminMiddleware::class])->prefix('admin')->group(function () 
 Route::middleware([CustomerMiddleware::class])->prefix('/')->group(function () {
     Route::get('/', [DashboardController::class, 'showDashboard']);
     Route::get('/booking-history', [BookingController::class, 'showBookingHistory'])->name('bookinghistory');
+    Route::get('/hotel-description/{id}', [HotelController::class, 'showHotelDescription'])->name('hoteldescription');
 });
 
 //Global routes
