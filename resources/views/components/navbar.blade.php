@@ -1,5 +1,4 @@
 <link rel="stylesheet" href="{{ asset('css/components/navbar.css') }}">
-
 <nav>
     <div class="left-button">
         @if (Auth::check() && Auth::user()->type === 'admin')

@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('title', 'Owltel')
-@section('content')
 
+@section('cssStyles')
 <style>
     .dashboard-description{
         color: #430000;
@@ -15,8 +15,10 @@
         size: 100px;
     }
 
+
     .carousel-indicators img{
         width: 70px;
+        height: 35px;
         display: block;
     }
     .carousel-indicators button{
@@ -29,13 +31,13 @@
         border: 1px solid #430000;
     }
     .carousel-inner{
-        max-height: 400px;
-        max-width: 800px;
+        height: 450px;
+        width: 800px;
     }
     .carousel-inner img{
-        object-fit: cover;
-        height: 100%;
-        width: 100%;
+        height: 450px;
+        width: 800px;
+        object-fit: fill;
     }
     .carousel-inner button{
         border: none;
@@ -54,15 +56,29 @@
         bottom: 0;
         background: linear-gradient(to top, black 0%, transparent 100%);
         opacity: 0.6;
-        z-index: 1; 
+        z-index: 1;
     }
 
     .carousel-caption {
         z-index: 2;
     }
 
-</style>
 
+    .index{
+        width: 100%;
+        min-height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding-block: 20px;
+    }
+</style>
+@endsection
+
+@section('content')
+
+<div class="index">
 <div class="dashboard-description">
     <h1 class="fs-1 text-center fw-bold">OWLTEL</h1>
     <p class="text-center">
@@ -71,7 +87,7 @@
     </p>
 </div>
     <div class="carousel slide" id="carouselDemo" data-bs-wrap="true" data-bs-ride="carousel" >
-        <div class="carousel-inner"> 
+        <div class="carousel-inner">
             @foreach($destinations as $index => $destination)
             <div class="carousel-item {{$index === 0 ? 'active' : ''}}">
                 <img src="{{$destination->image_link}}" class="d-block w-100">
@@ -109,4 +125,5 @@
         buttons[event.to].classList.add('active');
     });
 </script>
+</div>
 @endsection
