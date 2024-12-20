@@ -105,13 +105,18 @@ $actionRoute = "";
             fetch(editUrl)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
                     const form = document.getElementById('edit-form');
 
                     form.querySelectorAll('input, select, textarea').forEach(input => {
                         const fieldName = input.name || input.id;
 
+                        if (fieldName === 'facilities[]' && input.type === 'checkbox') {
+                            console.log('Checkbox:', input.name, input.value);
+                            input.checked = data.facilities.includes(parseInt(input.value));
+                        }
+
                         if (data.hasOwnProperty(fieldName)) {
+                            console.log(fieldName)
                             if (input.tagName === 'INPUT') {
                                 if (input.type === 'checkbox') {
                                     input.checked = Boolean(data[fieldName]);
@@ -133,24 +138,17 @@ $actionRoute = "";
                         let imgs;
 
                         try {
-                            // Try to parse image_link as a JSON array
                             imgs = JSON.parse(imageLink);
-
-                            // If it's an array, display the first image (you can modify this to show all images or handle them differently)
                             if (Array.isArray(imgs)) {
-                                imagePreview.src = imgs[0]; // Display the first image in the array
+                                imagePreview.src = imgs[0];
                                 imagePreview.alt = 'Current Image';
                                 imagePreview.style.display = 'block';
-
-                                // Optionally, add logic to handle multiple images (e.g., a gallery or carousel)
                             } else {
-                                // If it's not an array, treat it as a single image URL
                                 imagePreview.src = imageLink;
                                 imagePreview.alt = 'Current Image';
                                 imagePreview.style.display = 'block';
                             }
                         } catch (e) {
-                            // If parsing fails, assume it's a single image URL and display it
                             imagePreview.src = imageLink;
                             imagePreview.alt = 'Current Image';
                             imagePreview.style.display = 'block';

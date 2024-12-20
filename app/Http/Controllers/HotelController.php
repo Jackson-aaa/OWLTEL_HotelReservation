@@ -29,7 +29,8 @@ class HotelController extends Controller
         $locations = Location::get();
         $facilities = Facility::all();
 
-        $hotels->getCollection()->transform(function ($item) use ($locations) {
+        $hotels->getCollection()->transform(function ($item) use ($locations, $facilities) {
+
             return [
                 'id' => $item->id,
                 'name' => $item->name,
@@ -38,8 +39,10 @@ class HotelController extends Controller
                 'initial_price' => $item->initial_price,
                 'image_link' => $item->image_link,
                 'locations' => $locations,
+                'facilities' => $facilities,
             ];
         });
+
         return view('admin.hotel', compact('hotels', 'locations', 'facilities'));
     }
 
@@ -97,9 +100,23 @@ class HotelController extends Controller
     public function edit($id)
     {
         $hotel = Hotel::findOrFail($id);
+        $linkedFacilities = HotelFacility::where('hotel_id', $hotel->id)
+            ->pluck('facility_id')
+            ->toArray();
 
-        // return view('admin.edit-location', compact('location'));
-        return response()->json($hotel);
+        $hotelData = [
+            'id' => $hotel->id,
+            'name' => $hotel->name,
+            'description' => $hotel->description,
+            'address' => $hotel->address,
+            'initial_price' => $hotel->initial_price,
+            'image_link' => $hotel->image_link,
+            'facilities' => $linkedFacilities,
+            'created_at' => $hotel->created_at,
+            'updated_at' => $hotel->updated_at,
+        ];
+
+        return response()->json($hotelData);
     }
 
     public function update(Request $request, $id)
@@ -117,7 +134,6 @@ class HotelController extends Controller
 
             $imageLinks = [];
 
-            // If images are provided, process them
             if ($request->hasFile('images')) {
                 $images = $request->file('images'); // Array of images
 
@@ -133,8 +149,20 @@ class HotelController extends Controller
             $hotel = Hotel::findOrFail($id);
             $hotel->update($request->all());
 
-            // Capture the 'page' parameter from the request and redirect back with it
-            $page = $request->input('page', 1); // Default to 1 if no page is specified
+            if ($request->has('facilities')) {
+                $facilities = $request->input('facilities');
+
+                HotelFacility::where('hotel_id', $hotel->id)->delete();
+
+                foreach ($facilities as $facilityId) {
+                    HotelFacility::create([
+                        'hotel_id' => $hotel->id,
+                        'facility_id' => $facilityId
+                    ]);
+                }
+            }
+
+            $page = $request->input('page', 1);
 
             return redirect()
                 ->route('hotels.index', ['page' => $page])
@@ -146,7 +174,6 @@ class HotelController extends Controller
             return back()
                 ->withInput()
                 ->withErrors(['error' => 'Could not update hotel.']);
-            // return "bro";
         }
     }
 

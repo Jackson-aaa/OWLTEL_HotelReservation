@@ -31,6 +31,19 @@
     <label for="initial_price">Initial Price:</label>
     <input type="text" name="initial_price" id="edit-initial_price">
 </div>
+<div>
+    <label>Facilities:</label>
+    @foreach ($row['facilities'] as $facility)
+    <div>
+        <input
+            type="checkbox"
+            name="facilities[]"
+            value="{{ $facility->id }}"
+            id="edit-facility_{{ $facility->id }}">
+        <label for="edit-facility_{{ $facility->id }}">{{ $facility->name }}</label>
+    </div>
+    @endforeach
+</div>
 <div class="sub-container">
     <button class="sub-button" type="submit">Submit</button>
 </div>
