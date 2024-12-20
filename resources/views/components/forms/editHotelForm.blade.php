@@ -21,10 +21,10 @@
 </div>
 <div>
     <label for="image">Image:</label>
-    <input type="file" name="images[]" id="edit-images" accept="image/*" multiple required>
+    <input type="file" name="images[]" id="edit-images" accept="image/*" multiple>
 </div>
 <div>
-    <label for="image-preview">Current Image:</label>
+    <label for="image-preview">Current Images:</label>
     <img id="image-preview" src="" alt="Current Image" width="100" style="display: block;">
 </div>
 <div>

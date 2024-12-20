@@ -127,8 +127,6 @@ class LocationController extends Controller
         }
     }
 
-
-
     public function destroy($id)
     {
         try {

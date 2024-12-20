@@ -14,7 +14,7 @@
 <div>
 
     <label for="location_id">Location ID:</label>
-    <select name="location_id" id="edit-location_id" required>
+    <select name="location_id" id="edit-location_id">
         <option value="" disabled selected>Select Location ID</option>
     </select>
 </div>

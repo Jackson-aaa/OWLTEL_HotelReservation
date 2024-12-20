@@ -129,7 +129,32 @@ $actionRoute = "";
 
                     if (data.hasOwnProperty('image_link')) {
                         const imagePreview = document.getElementById('image-preview');
-                        imagePreview.src = data['image_link'];
+                        const imageLink = data['image_link'];
+                        let imgs;
+
+                        try {
+                            // Try to parse image_link as a JSON array
+                            imgs = JSON.parse(imageLink);
+
+                            // If it's an array, display the first image (you can modify this to show all images or handle them differently)
+                            if (Array.isArray(imgs)) {
+                                imagePreview.src = imgs[0]; // Display the first image in the array
+                                imagePreview.alt = 'Current Image';
+                                imagePreview.style.display = 'block';
+
+                                // Optionally, add logic to handle multiple images (e.g., a gallery or carousel)
+                            } else {
+                                // If it's not an array, treat it as a single image URL
+                                imagePreview.src = imageLink;
+                                imagePreview.alt = 'Current Image';
+                                imagePreview.style.display = 'block';
+                            }
+                        } catch (e) {
+                            // If parsing fails, assume it's a single image URL and display it
+                            imagePreview.src = imageLink;
+                            imagePreview.alt = 'Current Image';
+                            imagePreview.style.display = 'block';
+                        }
                     }
 
                     document.getElementById('edit-form').action = updateUrl;
