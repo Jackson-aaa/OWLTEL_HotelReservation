@@ -9,13 +9,16 @@ return new class extends Migration
     public function up(): void
     {
 
-        Schema::create("locations", function (Blueprint $table) {
+        Schema::create('locations', function (Blueprint $table) {
             $table->id();
-            $table->string("name");
-            $table->foreignId("location_id")->nullable()->constrained();
+            $table->string('name');
+            $table->foreignId('location_id')
+                ->nullable()
+                ->constrained('locations')
+                ->onDelete('cascade');
             $table->enum('type', ['country', 'region', 'city', 'place'])->index();
-            $table->string("description");
-            $table->string("image_link")->nullable();
+            $table->string('description');
+            $table->string('image_link')->nullable();
             $table->timestamps();
         });
     }

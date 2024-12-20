@@ -52,13 +52,18 @@ class HotelController extends Controller
                 'address' => 'required|string',
                 'location_id' => 'required|string|max:255',
                 'initial_price' => 'required|numeric',
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:20480'
+                'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:20480'
             ]);
+            $images = $request->file('images'); // Array of images
+            $imageLinks = []; // Array to hold image links
 
-            $image = $request->file('image');
-            $imageName = $request->name . time() . '.' . $image->getClientOriginalExtension();
-            $imagePath = Storage::disk('azure')->putFileAs('img/hotels', $image, $imageName);
-            $request['image_link'] = Storage::disk('azure')->url($imagePath);
+            foreach ($images as $image) {
+                $imageName = $request->name . time() . '.' . $image->getClientOriginalExtension();
+                $imagePath = Storage::disk('azure')->putFileAs('img/hotels', $image, $imageName);
+                $imageLinks[] = Storage::disk('azure')->url($imagePath);
+            }
+
+            $request['image_link'] = json_encode($imageLinks);
 
             Hotel::create([
                 'name' => $request['name'],
@@ -94,14 +99,22 @@ class HotelController extends Controller
                 'address' => 'required|string',
                 'location_id' => 'required|string|max:255',
                 'initial_price' => 'required|numeric',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:20480'
+                'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:20480'
             ]);
 
-            if ($request->hasFile('image')) {
-                $image = $request->file('image');
-                $imageName = $request->name . time() . '.' . $image->getClientOriginalExtension();
-                $imagePath = Storage::disk('azure')->putFileAs('img/hotels', $image, $imageName);
-                $request['image_link'] = Storage::disk('azure')->url($imagePath);
+            $imageLinks = [];
+
+            // If images are provided, process them
+            if ($request->hasFile('images')) {
+                $images = $request->file('images'); // Array of images
+
+                foreach ($images as $image) {
+                    $imageName = $request->name . time() . '.' . $image->getClientOriginalExtension();
+                    $imagePath = Storage::disk('azure')->putFileAs('img/hotels', $image, $imageName);
+                    $imageLinks[] = Storage::disk('azure')->url($imagePath);
+                }
+
+                $request['image_link'] = json_encode($imageLinks);
             }
 
             $hotel = Hotel::findOrFail($id);

@@ -16,6 +16,7 @@ class LocationController extends Controller
     {
         $query = Location::query();
 
+
         if ($request->has('search') && $request->search !== '') {
             $search = $request->search;
             $query->where('name', 'like', '%' . $search . '%')
@@ -23,8 +24,23 @@ class LocationController extends Controller
                 ->orWhere('description', 'like', '%' . $search . '%');
         }
 
-        $locations = $query->paginate(5);
-        return view('admin.location', compact('locations'));
+        $locations = $query->orderBy('id', 'asc')
+            ->paginate(5);
+
+        $locations_all = Location::all();
+
+        $locations->getCollection()->transform(function ($item) use ($locations_all) {
+            return [
+                'id' => $item->id,
+                'name' => $item->name,
+                'location_id' => $item->location_id,
+                'type' => $item->type,
+                'description' => $item->description,
+                'image_link' => $item->image_link,
+                'locations' => $locations_all
+            ];
+        });
+        return view('admin.location', compact('locations', 'locations_all'));
     }
 
     public $selectedLocation;
@@ -83,10 +99,10 @@ class LocationController extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $imageName = $request->name . time() . '.' . $image->getClientOriginalExtension();
-            
+
             // Store the file in Azure Blob Storage
             $imagePath = Storage::disk('azure')->putFileAs('img/locations', $image, $imageName);
-        
+
             // Generate the full URL to the stored image
             $request['image_link'] = Storage::disk('azure')->url($imagePath);
         }
@@ -125,7 +141,4 @@ class LocationController extends Controller
             return back()->withErrors(['error' => 'Could not delete location.']);
         }
     }
-
-
-    public function search(Request $request) {}
 }
