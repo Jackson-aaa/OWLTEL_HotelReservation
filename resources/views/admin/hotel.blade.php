@@ -66,6 +66,15 @@ $editSlot = "components.forms.editHotelForm";
         <label for="initial_price">Initial Price:</label>
         <input type="text" name="initial_price" id="initial_price">
     </div>
+    <div>
+        <label>Facilities:</label>
+        @foreach ($facilities as $facility)
+        <div>
+            <input type="checkbox" name="facilities[]" value="{{ $facility->id }}" id="facility_{{ $facility->id }}">
+            <label for="facility_{{ $facility->id }}">{{ $facility->name }}</label>
+        </div>
+        @endforeach
+    </div>
     <div class="sub-container">
         <button class="sub-button" type="submit">Submit</button>
     </div>

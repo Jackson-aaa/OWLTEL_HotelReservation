@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Hotel;
 use App\Models\Location;
+use App\Models\Facility;
+use App\Models\HotelFacility;
 use Illuminate\Support\Facades\Storage;
 
 class HotelController extends Controller
@@ -25,6 +27,7 @@ class HotelController extends Controller
             ->paginate(5);
 
         $locations = Location::get();
+        $facilities = Facility::all();
 
         $hotels->getCollection()->transform(function ($item) use ($locations) {
             return [
@@ -34,10 +37,10 @@ class HotelController extends Controller
                 'address' => $item->address,
                 'initial_price' => $item->initial_price,
                 'image_link' => $item->image_link,
-                'locations' => $locations
+                'locations' => $locations,
             ];
         });
-        return view('admin.hotel', compact('hotels', 'locations'));
+        return view('admin.hotel', compact('hotels', 'locations', 'facilities'));
     }
 
     public function store(Request $request)
@@ -65,7 +68,7 @@ class HotelController extends Controller
 
             $request['image_link'] = json_encode($imageLinks);
 
-            Hotel::create([
+            $hotel = Hotel::create([
                 'name' => $request['name'],
                 'description' => $request['description'],
                 'address' => $request['address'],
@@ -73,6 +76,16 @@ class HotelController extends Controller
                 'initial_price' => $request['initial_price'],
                 'image_link' => $request['image_link']
             ]);
+
+            if ($request->has('facilities')) {
+                $facilities = $request->input('facilities');
+                foreach ($facilities as $facilityId) {
+                    HotelFacility::create([
+                        'hotel_id' => $hotel->id,
+                        'facility_id' => $facilityId
+                    ]);
+                }
+            }
 
             return redirect()->route('hotels.index')->with('success', 'Hotel added successfully!');
         } catch (\Exception $e) {

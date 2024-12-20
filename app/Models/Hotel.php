@@ -5,11 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Location;
+use App\Models\Facility;
 
 class Hotel extends Model
 {
     use HasFactory;
-  
+
     protected $table = 'hotels';
     protected $fillable = [
         'name',
@@ -27,9 +28,14 @@ class Hotel extends Model
     {
         return $this->belongsTo(Location::class);
     }
-  
+
     public function bookings()
     {
         return $this->hasMany(Booking::class);
+    }
+
+    public function facilities()
+    {
+        return $this->hasMany(Facility::class);
     }
 }
