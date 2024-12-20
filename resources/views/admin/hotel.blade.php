@@ -13,7 +13,7 @@
 
 @php
 $columns = ['id', 'name', 'description', 'address', 'initial_price', 'image_link'];
-$displayNames = ['ID', 'Name', 'Description', 'Address', 'Initial Price', 'Image Link'];
+$displayNames = ['ID', 'Name', 'Description', 'Address', 'Initial Price', 'Image Link(s)'];
 $tableName = "Hotels";
 $actionName = "Add Hotel";
 $actionName2 = "Edit Hotel";
@@ -59,8 +59,8 @@ $editSlot = "components.forms.editHotelForm";
     </div>
 
     <div>
-        <label for="image">Image:</label>
-        <input type="file" name="image" id="image" accept="image/*" required>
+        <label for="images">Images:</label>
+        <input type="file" name="images[]" id="images" accept="image/*" multiple required>
     </div>
     <div>
         <label for="initial_price">Initial Price:</label>

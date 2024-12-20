@@ -21,7 +21,7 @@
 </div>
 <div>
     <label for="image">Image:</label>
-    <input type="file" name="image" id="edit-image" accept="image/*">
+    <input type="file" name="images[]" id="edit-images" accept="image/*" multiple required>
 </div>
 <div>
     <label for="image-preview">Current Image:</label>

@@ -35,8 +35,23 @@ $actionRoute = "";
                 @foreach($rows as $row)
                 <tr>
                     @foreach($columns as $column)
-                    <td> @if($column === 'image_link' || $column === 'icon_link')
+                    <td>
+                        @if($column === 'image_link' || $column === 'icon_link')
+                        @if($column === 'icon_link')
+                        <span>{!! $row[$column] ?? 'N/A' !!}</span>
+                        @else
+                        @php
+                        $imageLinks = json_decode($row[$column], true);
+                        @endphp
+
+                        @if(is_array($imageLinks))
+                        @foreach($imageLinks as $imageLink)
+                        <a href="{{ $imageLink }}" target="_blank">{{ $imageLink }}</a><br>
+                        @endforeach
+                        @else
                         <a href="{{ $row[$column] ?? '#' }}" target="_blank">{{ $row[$column] ?? 'N/A' }}</a>
+                        @endif
+                        @endif
                         @else
                         {{ $row[$column] ?? 'N/A' }}
                         @endif
