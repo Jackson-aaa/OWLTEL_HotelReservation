@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\FacilityController;
+use App\Http\Controllers\HotelListController;
 use App\Http\Controllers\HotelController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\CustomerMiddleware;
@@ -52,6 +53,7 @@ Route::middleware([AdminMiddleware::class])->prefix('admin')->group(function () 
 //Routes only for customer
 Route::middleware([CustomerMiddleware::class])->prefix('/')->group(function () {
     Route::get('/', [DashboardController::class, 'showDashboard']);
+    Route::get('/hotel-pick', [HotelListController::class, 'showListHotel'])->name('showList');
     Route::get('/booking-history', [BookingController::class, 'showBookingHistory'])->name('bookinghistory');
 });
 
