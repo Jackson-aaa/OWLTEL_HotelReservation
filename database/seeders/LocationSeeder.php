@@ -16,7 +16,7 @@ class LocationSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        for ($i = 1; $i <= 20; $i++) {
+        for ($i = 1; $i <= 5; $i++) {
             $type = $faker->randomElement(['country', 'region', 'city', 'place']);
 
             switch ($type) {

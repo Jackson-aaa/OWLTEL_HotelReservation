@@ -14,7 +14,7 @@
     <div>
 
         @if (!(Auth::check() && Auth::user()->type === 'admin'))
-            <form class="search-form">
+            <form class="search-form" action="{{ route('showList') }}">
                 @csrf
                 <input type="text" placeholder="Search destination" class="search-input" name="destination" required>
                 <div></div>

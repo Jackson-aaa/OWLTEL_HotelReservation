@@ -18,5 +18,9 @@ class Location extends Model
         'image_link'
     ];
 
+    public function hotels(){
+        return $this->hasMany(Hotel::class, 'location_id');
+    }
+
     public $timestamps = true;
 }
