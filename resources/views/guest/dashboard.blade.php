@@ -33,7 +33,7 @@
     .carousel-inner img{
         height: 450px;
         width: 800px;
-        object-fit: fill;
+        object-fit: cover;
     }
     .carousel-inner button{
         border: none;

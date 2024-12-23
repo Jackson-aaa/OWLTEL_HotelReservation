@@ -6,7 +6,18 @@
 @endsection
 
 @section('page-content')
-
+<style>
+    .facilityContainer{
+        flex-wrap: wrap;
+    }
+    .facilities input{
+        width: 17px;
+        height: 17px;
+    }
+    .facility_name{
+        padding: 5px;
+    }
+</style>
 <div class="add">
     <button class="add-b" onclick="openModal('addHotelModal')"><i class="fa-solid fa-plus"></i></button>
 </div>
@@ -68,12 +79,14 @@ $editSlot = "components.forms.editHotelForm";
     </div>
     <div>
         <label>Facilities:</label>
+        <div class="facilityContainer">
         @foreach ($facilities as $facility)
-        <div>
-            <input type="checkbox" name="facilities[]" value="{{ $facility->id }}" id="facility_{{ $facility->id }}">
-            <label for="facility_{{ $facility->id }}">{{ $facility->name }}</label>
-        </div>
+            <div class="facilities">
+                <input type="checkbox" name="facilities[]" value="{{ $facility->id }}" id="facility_{{ $facility->id }}">
+                <label for="facility_{{ $facility->id }}" class="facility_name">{{ $facility->name }}</label>
+            </div>
         @endforeach
+        </div>
     </div>
     <div class="sub-container">
         <button class="sub-button" type="submit">Submit</button>

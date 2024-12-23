@@ -10,10 +10,10 @@ class HotelListController extends Controller
 {
     public function showListHotel(Request $request){
         if(!$request->has('destination')){
-            // what should i write over here? just pick most popular?
+            // what should i write over here? just pick random?
         }
         $locationId = Location::where('name', $request->destination)->first();
-        $hotels = $locationId->hotels;
+        $hotels = $locationId->hotels()->with('facilities')->get();
         return view('guest.hotel-pick', compact('hotels'));
     }
 }
