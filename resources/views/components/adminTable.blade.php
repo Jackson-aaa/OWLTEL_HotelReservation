@@ -74,10 +74,6 @@ $actionRoute = "";
                                 style="display:inline;">
                                 @csrf
                                 @method('DELETE')
-
-                                <!-- wtf it says the second argument is error but IT WORKS!
-                                            I spent hours figuring this out, IT'S NOT AN ERROR!
-                                        -->
                                 <button type="button" onclick="openModal2('deleteModal', {{ $row['id'] }})"
                                     class="btn-delete">Delete</button>
                             </form>
