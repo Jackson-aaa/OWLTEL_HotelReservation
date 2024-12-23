@@ -305,3 +305,8 @@
     color: #B1B1B1;
     width: 100px;
 }
+
+.btn-delete:disabled{
+    opacity: 50%;
+    cursor: not-allowed;
+}
