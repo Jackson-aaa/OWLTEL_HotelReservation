@@ -21,6 +21,10 @@ class Location extends Model
     public function hotels(){
         return $this->hasMany(Hotel::class, 'location_id');
     }
+    
+    public function locations(){
+        return $this->hasMany(Location::class, 'location_id');
+    }
 
     public $timestamps = true;
 }

@@ -74,7 +74,10 @@ $actionRoute = "";
                                 style="display:inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="button" onclick="openModal2('deleteModal', {{ $row['id'] }})"
+                                <button type="button" onclick="openModal2('deleteModal', {{ $row['id'] }})" 
+                                    @if (isset($row['can_delete']) && $row['can_delete'] === 0)
+                                        disabled
+                                    @endif
                                     class="btn-delete">Delete</button>
                             </form>
                         </div>

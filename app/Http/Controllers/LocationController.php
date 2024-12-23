@@ -14,7 +14,7 @@ class LocationController extends Controller
 
     public function index(Request $request)
     {
-        $query = Location::query();
+        $query = Location::with('locations');
 
 
         if ($request->has('search') && $request->search !== '') {
@@ -37,7 +37,8 @@ class LocationController extends Controller
                 'type' => $item->type,
                 'description' => $item->description,
                 'image_link' => $item->image_link,
-                'locations' => $locations_all
+                'locations' => $locations_all,
+                'can_delete' => $item->locations()->exists() ? 0 : 1
             ];
         });
         return view('admin.location', compact('locations', 'locations_all'));
