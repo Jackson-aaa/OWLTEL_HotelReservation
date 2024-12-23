@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\HotelFacility;
 
 class Facility extends Model
 {
@@ -17,8 +18,7 @@ class Facility extends Model
 
     public $timestamps = true;
 
-    public function hotels()
-    {
-        return $this->belongsToMany(Hotel::class, 'hotel_facilities');
+    public function facilities(){
+        return $this->belongsToMany(HotelFacility::class, 'hotel_facilities', 'hotel_id', 'facility_id');
     }
 }
