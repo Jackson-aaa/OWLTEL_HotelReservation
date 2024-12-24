@@ -18,5 +18,17 @@ class Location extends Model
         'image_link'
     ];
 
+    public function hotels(){
+        return $this->hasMany(Hotel::class, 'location_id');
+    }
+    
+    public function locations(){
+        return $this->hasMany(Location::class, 'location_id');
+    }
+
+    public function location(){
+        return $this->belongsTo(Location::class, 'location_id');
+    }
+
     public $timestamps = true;
 }

@@ -21,15 +21,28 @@
 </div>
 <div>
     <label for="image">Image:</label>
-    <input type="file" name="image" id="edit-image" accept="image/*">
+    <input type="file" name="images[]" id="edit-images" accept="image/*" multiple>
 </div>
 <div>
-    <label for="image-preview">Current Image:</label>
+    <label for="image-preview">Current Images:</label>
     <img id="image-preview" src="" alt="Current Image" width="100" style="display: block;">
 </div>
 <div>
     <label for="initial_price">Initial Price:</label>
     <input type="text" name="initial_price" id="edit-initial_price">
+</div>
+<div>
+    <label>Facilities:</label>
+    @foreach ($row['facilities'] as $facility)
+    <div>
+        <input
+            type="checkbox"
+            name="facilities[]"
+            value="{{ $facility->id }}"
+            id="edit-facility_{{ $facility->id }}">
+        <label for="edit-facility_{{ $facility->id }}">{{ $facility->name }}</label>
+    </div>
+    @endforeach
 </div>
 <div class="sub-container">
     <button class="sub-button" type="submit">Submit</button>

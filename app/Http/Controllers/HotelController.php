@@ -28,8 +28,10 @@ class HotelController extends Controller
             ->paginate(5);
 
         $locations = Location::get();
+        $facilities = Facility::all();
 
-        $hotels->getCollection()->transform(function ($item) use ($locations) {
+        $hotels->getCollection()->transform(function ($item) use ($locations, $facilities) {
+
             return [
                 'id' => $item->id,
                 'name' => $item->name,
@@ -37,10 +39,12 @@ class HotelController extends Controller
                 'address' => $item->address,
                 'initial_price' => $item->initial_price,
                 'image_link' => $item->image_link,
-                'locations' => $locations
+                'locations' => $locations,
+                'facilities' => $facilities,
             ];
         });
-        return view('admin.hotel', compact('hotels', 'locations'));
+
+        return view('admin.hotel', compact('hotels', 'locations', 'facilities'));
     }
 
     public function store(Request $request)
@@ -55,15 +59,20 @@ class HotelController extends Controller
                 'address' => 'required|string',
                 'location_id' => 'required|string|max:255',
                 'initial_price' => 'required|numeric',
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:20480'
+                'images.*' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:20480'
             ]);
+            $images = $request->file('images'); // Array of images
+            $imageLinks = []; // Array to hold image links
 
-            $image = $request->file('image');
-            $imageName = $request->name . time() . '.' . $image->getClientOriginalExtension();
-            $imagePath = Storage::disk('azure')->putFileAs('img/hotels', $image, $imageName);
-            $request['image_link'] = Storage::disk('azure')->url($imagePath);
+            foreach ($images as $image) {
+                $imageName = $request->name . time() . '.' . $image->getClientOriginalExtension();
+                $imagePath = Storage::disk('azure')->putFileAs('img/hotels', $image, $imageName);
+                $imageLinks[] = Storage::disk('azure')->url($imagePath);
+            }
 
-            Hotel::create([
+            $request['image_link'] = json_encode($imageLinks);
+
+            $hotel = Hotel::create([
                 'name' => $request['name'],
                 'description' => $request['description'],
                 'address' => $request['address'],
@@ -71,6 +80,16 @@ class HotelController extends Controller
                 'initial_price' => $request['initial_price'],
                 'image_link' => $request['image_link']
             ]);
+
+            if ($request->has('facilities')) {
+                $facilities = $request->input('facilities');
+                foreach ($facilities as $facilityId) {
+                    HotelFacility::create([
+                        'hotel_id' => $hotel->id,
+                        'facility_id' => $facilityId
+                    ]);
+                }
+            }
 
             return redirect()->route('hotels.index')->with('success', 'Hotel added successfully!');
         } catch (\Exception $e) {
@@ -82,9 +101,24 @@ class HotelController extends Controller
     public function edit($id)
     {
         $hotel = Hotel::findOrFail($id);
+        $linkedFacilities = HotelFacility::where('hotel_id', $hotel->id)
+            ->pluck('facility_id')
+            ->toArray();
 
-        // return view('admin.edit-location', compact('location'));
-        return response()->json($hotel);
+        $hotelData = [
+            'id' => $hotel->id,
+            'name' => $hotel->name,
+            'description' => $hotel->description,
+            'address' => $hotel->address,
+            'location_id' => $hotel->location_id,
+            'initial_price' => $hotel->initial_price,
+            'image_link' => $hotel->image_link,
+            'facilities' => $linkedFacilities,
+            'created_at' => $hotel->created_at,
+            'updated_at' => $hotel->updated_at,
+        ];
+
+        return response()->json($hotelData);
     }
 
     public function update(Request $request, $id)
@@ -97,21 +131,40 @@ class HotelController extends Controller
                 'address' => 'required|string',
                 'location_id' => 'required|string|max:255',
                 'initial_price' => 'required|numeric',
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:20480'
+                'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:20480'
             ]);
 
-            if ($request->hasFile('image')) {
-                $image = $request->file('image');
-                $imageName = $request->name . time() . '.' . $image->getClientOriginalExtension();
-                $imagePath = Storage::disk('azure')->putFileAs('img/hotels', $image, $imageName);
-                $request['image_link'] = Storage::disk('azure')->url($imagePath);
+            $imageLinks = [];
+
+            if ($request->hasFile('images')) {
+                $images = $request->file('images'); // Array of images
+
+                foreach ($images as $image) {
+                    $imageName = $request->name . time() . '.' . $image->getClientOriginalExtension();
+                    $imagePath = Storage::disk('azure')->putFileAs('img/hotels', $image, $imageName);
+                    $imageLinks[] = Storage::disk('azure')->url($imagePath);
+                }
+
+                $request['image_link'] = json_encode($imageLinks);
             }
 
             $hotel = Hotel::findOrFail($id);
             $hotel->update($request->all());
 
-            // Capture the 'page' parameter from the request and redirect back with it
-            $page = $request->input('page', 1); // Default to 1 if no page is specified
+            if ($request->has('facilities')) {
+                $facilities = $request->input('facilities');
+
+                HotelFacility::where('hotel_id', $hotel->id)->delete();
+
+                foreach ($facilities as $facilityId) {
+                    HotelFacility::create([
+                        'hotel_id' => $hotel->id,
+                        'facility_id' => $facilityId
+                    ]);
+                }
+            }
+
+            $page = $request->input('page', 1);
 
             return redirect()
                 ->route('hotels.index', ['page' => $page])
@@ -123,7 +176,6 @@ class HotelController extends Controller
             return back()
                 ->withInput()
                 ->withErrors(['error' => 'Could not update hotel.']);
-            // return "bro";
         }
     }
 

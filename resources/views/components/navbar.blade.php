@@ -1,5 +1,4 @@
 <link rel="stylesheet" href="{{ asset('css/components/navbar.css') }}">
-
 <nav>
     <div class="left-button">
         @if (Auth::check() && Auth::user()->type === 'admin')
@@ -15,13 +14,21 @@
     <div>
 
         @if (!(Auth::check() && Auth::user()->type === 'admin'))
-            <form class="search-form">
-                @csrf
-                <input type="text" placeholder="Search destination" class="search-input" name="destination" required>
-                <div></div>
-                <input type="datetime" placeholder="Check In" name="checkin" required>
-                <div></div>
-                <input type="datetime" placeholder="Check Out" name="checkout" required>
+            <form class="search-form" method="GET" action="{{ route('showList') }}">
+                <input type="text" placeholder="Search destination" class="search-input" name="search_input"
+                    value="{{ request('search_input') }}" required>
+                <div class="divider"></div>
+                <div class="input-container">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <input type="text" placeholder="Check In" name="check_in" id="check_in"
+                        value="{{ request('check_in') }}" autocomplete="off" required>
+                </div>
+                <div class="divider"></div>
+                <div class="input-container">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <input type="text" placeholder="Check Out" name="check_out" id="check_out"
+                        value="{{ request('check_out') }}" autocomplete="off" required>
+                </div>
                 <button type="submit" class="search-button">
                     <i class="fa-solid fa-search"></i>
                 </button>
@@ -63,3 +70,35 @@
         @endauth
     </div>
 </nav>
+
+<script>
+    $(function () {
+        var checkIn = $("#check_in");
+        var checkOut = $("#check_out");
+
+        function parseDate(dateStr) {
+            if (!dateStr) return null;
+            var parts = dateStr.split("-");
+            return new Date(parts[2], parts[1] - 1, parts[0]);
+        }
+
+        checkIn.datepicker({
+            dateFormat: "dd-mm-yy",
+            minDate: 0,
+            onSelect: function (selectedDate) {
+                var minDate = parseDate(selectedDate);
+                checkOut.datepicker("option", "minDate", minDate);
+            },
+        });
+
+        checkOut.datepicker({
+            dateFormat: "dd-mm-yy",
+            onSelect: function (selectedDate) {
+                var maxDate = parseDate(selectedDate);
+                if (maxDate) {
+                    checkIn.datepicker("option", "maxDate", null);
+                }
+            },
+        });
+    });
+</script>

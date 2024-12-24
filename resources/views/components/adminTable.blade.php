@@ -35,8 +35,23 @@ $actionRoute = "";
                 @foreach($rows as $row)
                 <tr>
                     @foreach($columns as $column)
-                    <td> @if($column === 'image_link' || $column === 'icon_link')
+                    <td>
+                        @if($column === 'image_link' || $column === 'icon_link')
+                        @if($column === 'icon_link')
+                        <span>{!! $row[$column] ?? 'N/A' !!}</span>
+                        @else
+                        @php
+                        $imageLinks = json_decode($row[$column], true);
+                        @endphp
+
+                        @if(is_array($imageLinks))
+                        @foreach($imageLinks as $imageLink)
+                        <a href="{{ $imageLink }}" target="_blank">{{ $imageLink }}</a><br>
+                        @endforeach
+                        @else
                         <a href="{{ $row[$column] ?? '#' }}" target="_blank">{{ $row[$column] ?? 'N/A' }}</a>
+                        @endif
+                        @endif
                         @else
                         {{ $row[$column] ?? 'N/A' }}
                         @endif
@@ -59,11 +74,10 @@ $actionRoute = "";
                                 style="display:inline;">
                                 @csrf
                                 @method('DELETE')
-
-                                <!-- wtf it says the second argument is error but IT WORKS!
-                                            I spent hours figuring this out, IT'S NOT AN ERROR!
-                                        -->
                                 <button type="button" onclick="openModal2('deleteModal', {{ $row['id'] }})"
+                                    @if (isset($row['can_delete']) && $row['can_delete']===0)
+                                    disabled
+                                    @endif
                                     class="btn-delete">Delete</button>
                             </form>
                         </div>
@@ -90,13 +104,19 @@ $actionRoute = "";
             fetch(editUrl)
                 .then(response => response.json())
                 .then(data => {
-                    console.log(data);
                     const form = document.getElementById('edit-form');
 
                     form.querySelectorAll('input, select, textarea').forEach(input => {
                         const fieldName = input.name || input.id;
+                        // console.log('in', fieldName)
+
+                        if (fieldName === 'facilities[]' && input.type === 'checkbox') {
+                            console.log('Checkbox:', input.name, input.value);
+                            input.checked = data.facilities.includes(parseInt(input.value));
+                        }
 
                         if (data.hasOwnProperty(fieldName)) {
+                            // console.log(fieldName)
                             if (input.tagName === 'INPUT') {
                                 if (input.type === 'checkbox') {
                                     input.checked = Boolean(data[fieldName]);
@@ -105,6 +125,11 @@ $actionRoute = "";
                                     input.value = data[fieldName];
                                 }
                             } else if (input.tagName === 'SELECT') {
+                                console.log('apa ini', data[fieldName])
+                                if (fieldName === 'type') {
+                                    input.value = data[fieldName];
+                                    input.dispatchEvent(new Event('change'));
+                                }
                                 input.value = data[fieldName];
                             } else if (input.tagName === 'TEXTAREA') {
                                 input.value = data[fieldName];
@@ -112,9 +137,36 @@ $actionRoute = "";
                         }
                     });
 
+                    const locationSelect = document.getElementById('edit-location_id');
+                    if (data.hasOwnProperty('location_id')) {
+                        const preSelectedLocationId = data.location_id;
+                        setTimeout(() => {
+                            const option = Array.from(locationSelect.options).find(opt => opt.value == preSelectedLocationId);
+                            if (option) option.selected = true;
+                        }, 0);
+                    }
+
                     if (data.hasOwnProperty('image_link')) {
                         const imagePreview = document.getElementById('image-preview');
-                        imagePreview.src = data['image_link'];
+                        const imageLink = data['image_link'];
+                        let imgs;
+
+                        try {
+                            imgs = JSON.parse(imageLink);
+                            if (Array.isArray(imgs)) {
+                                imagePreview.src = imgs[0];
+                                imagePreview.alt = 'Current Image';
+                                imagePreview.style.display = 'block';
+                            } else {
+                                imagePreview.src = imageLink;
+                                imagePreview.alt = 'Current Image';
+                                imagePreview.style.display = 'block';
+                            }
+                        } catch (e) {
+                            imagePreview.src = imageLink;
+                            imagePreview.alt = 'Current Image';
+                            imagePreview.style.display = 'block';
+                        }
                     }
 
                     document.getElementById('edit-form').action = updateUrl;

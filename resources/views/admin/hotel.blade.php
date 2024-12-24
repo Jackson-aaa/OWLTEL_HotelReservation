@@ -6,14 +6,25 @@
 @endsection
 
 @section('page-content')
-
+<style>
+    .facilityContainer{
+        flex-wrap: wrap;
+    }
+    .facilities input{
+        width: 17px;
+        height: 17px;
+    }
+    .facility_name{
+        padding: 5px;
+    }
+</style>
 <div class="add">
     <button class="add-b" onclick="openModal('addHotelModal')"><i class="fa-solid fa-plus"></i></button>
 </div>
 
 @php
 $columns = ['id', 'name', 'description', 'address', 'initial_price', 'image_link'];
-$displayNames = ['ID', 'Name', 'Description', 'Address', 'Initial Price', 'Image Link'];
+$displayNames = ['ID', 'Name', 'Description', 'Address', 'Initial Price', 'Image Link(s)'];
 $tableName = "Hotels";
 $actionName = "Add Hotel";
 $actionName2 = "Edit Hotel";
@@ -59,12 +70,23 @@ $editSlot = "components.forms.editHotelForm";
     </div>
 
     <div>
-        <label for="image">Image:</label>
-        <input type="file" name="image" id="image" accept="image/*" required>
+        <label for="images">Images:</label>
+        <input type="file" name="images[]" id="images" accept="image/*" multiple required>
     </div>
     <div>
         <label for="initial_price">Initial Price:</label>
         <input type="text" name="initial_price" id="initial_price">
+    </div>
+    <div>
+        <label>Facilities:</label>
+        <div class="facilityContainer">
+        @foreach ($facilities as $facility)
+            <div class="facilities">
+                <input type="checkbox" name="facilities[]" value="{{ $facility->id }}" id="facility_{{ $facility->id }}">
+                <label for="facility_{{ $facility->id }}" class="facility_name">{{ $facility->name }}</label>
+            </div>
+        @endforeach
+        </div>
     </div>
     <div class="sub-container">
         <button class="sub-button" type="submit">Submit</button>
