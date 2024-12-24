@@ -17,4 +17,9 @@ class HotelFacility extends Model
     ];
 
     public $timestamps = true;
+  
+    public function facility()
+    {
+        return $this->belongsTo(Facility::class, 'facility_id', 'id');
+    }
 }
