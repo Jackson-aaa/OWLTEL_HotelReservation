@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Hotel;
 use App\Models\Location;
+use App\Models\Facility;
+use App\Models\HotelFacility;
+use App\Models\Review;
 use Illuminate\Support\Facades\Storage;
 
 class HotelController extends Controller
@@ -124,8 +127,6 @@ class HotelController extends Controller
         }
     }
 
-
-
     public function destroy($id)
     {
         try {
@@ -141,7 +142,9 @@ class HotelController extends Controller
 
     public function showHotelDescription(Request $request)
     {
-        $hotel = Hotel::findOrFail($request->id);
-        return view("guest.hotel-description")->with("hotel", $hotel);
+        $hotel = Hotel::with('hotelFacilities.facility')->find($request->id);
+        // dd(json_decode($hotel->image_link));
+        return view("guest.hotel-description")
+            ->with("hotel", $hotel);
     }
 }
