@@ -74,9 +74,9 @@ $actionRoute = "";
                                 style="display:inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="button" onclick="openModal2('deleteModal', {{ $row['id'] }})" 
-                                    @if (isset($row['can_delete']) && $row['can_delete'] === 0)
-                                        disabled
+                                <button type="button" onclick="openModal2('deleteModal', {{ $row['id'] }})"
+                                    @if (isset($row['can_delete']) && $row['can_delete']===0)
+                                    disabled
                                     @endif
                                     class="btn-delete">Delete</button>
                             </form>
@@ -108,6 +108,7 @@ $actionRoute = "";
 
                     form.querySelectorAll('input, select, textarea').forEach(input => {
                         const fieldName = input.name || input.id;
+                        // console.log('in', fieldName)
 
                         if (fieldName === 'facilities[]' && input.type === 'checkbox') {
                             console.log('Checkbox:', input.name, input.value);
@@ -115,7 +116,7 @@ $actionRoute = "";
                         }
 
                         if (data.hasOwnProperty(fieldName)) {
-                            console.log(fieldName)
+                            // console.log(fieldName)
                             if (input.tagName === 'INPUT') {
                                 if (input.type === 'checkbox') {
                                     input.checked = Boolean(data[fieldName]);
@@ -124,12 +125,26 @@ $actionRoute = "";
                                     input.value = data[fieldName];
                                 }
                             } else if (input.tagName === 'SELECT') {
+                                console.log('apa ini', data[fieldName])
+                                if (fieldName === 'type') {
+                                    input.value = data[fieldName];
+                                    input.dispatchEvent(new Event('change'));
+                                }
                                 input.value = data[fieldName];
                             } else if (input.tagName === 'TEXTAREA') {
                                 input.value = data[fieldName];
                             }
                         }
                     });
+
+                    const locationSelect = document.getElementById('edit-location_id');
+                    if (data.hasOwnProperty('location_id')) {
+                        const preSelectedLocationId = data.location_id;
+                        setTimeout(() => {
+                            const option = Array.from(locationSelect.options).find(opt => opt.value == preSelectedLocationId);
+                            if (option) option.selected = true;
+                        }, 0);
+                    }
 
                     if (data.hasOwnProperty('image_link')) {
                         const imagePreview = document.getElementById('image-preview');

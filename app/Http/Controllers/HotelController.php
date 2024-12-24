@@ -109,6 +109,7 @@ class HotelController extends Controller
             'name' => $hotel->name,
             'description' => $hotel->description,
             'address' => $hotel->address,
+            'location_id' => $hotel->location_id,
             'initial_price' => $hotel->initial_price,
             'image_link' => $hotel->image_link,
             'facilities' => $linkedFacilities,

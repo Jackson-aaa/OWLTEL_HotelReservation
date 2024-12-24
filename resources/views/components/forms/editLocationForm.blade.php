@@ -12,10 +12,8 @@
     </select>
 </div>
 <div>
-
     <label for="location_id">Location ID:</label>
     <select name="location_id" id="edit-location_id">
-        <option value="" disabled selected>Select Location ID</option>
     </select>
 </div>
 <div>
@@ -38,12 +36,12 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         const typeSelect = document.getElementById('edit-type');
-        console.log(typeSelect);
         const locationSelect = document.getElementById('edit-location_id');
         const locations = @json($row['locations']);
 
         typeSelect.addEventListener('change', () => {
             const selectedType = typeSelect.value;
+            console.log("seltype", selectedType);
 
             locationSelect.innerHTML = '<option value="" disabled selected>Select Location ID</option>';
 
