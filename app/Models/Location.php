@@ -26,5 +26,9 @@ class Location extends Model
         return $this->hasMany(Location::class, 'location_id');
     }
 
+    public function location(){
+        return $this->belongsTo(Location::class, 'location_id');
+    }
+
     public $timestamps = true;
 }
