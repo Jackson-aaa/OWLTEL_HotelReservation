@@ -12,6 +12,7 @@ use App\Http\Controllers\HotelListController;
 use App\Http\Controllers\HotelController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\CustomerMiddleware;
+use App\Http\Middleware\GuestMiddleware;
 
 //Routes only for admin
 Route::middleware([AdminMiddleware::class])->prefix('admin')->group(function () {
@@ -51,11 +52,12 @@ Route::middleware([AdminMiddleware::class])->prefix('admin')->group(function () 
 });
 
 //Routes only for customer
-Route::middleware([CustomerMiddleware::class])->prefix('/')->group(function () {
+Route::middleware([GuestMiddleware::class])->prefix('/')->group(function () {
     Route::get('/', [DashboardController::class, 'showDashboard']);
     Route::get('/hotel-pick', [HotelListController::class, 'showListHotel'])->name('showList');
     Route::get('/booking-history', [BookingController::class, 'showBookingHistory'])->name('bookinghistory');
     Route::get('/hotel-description/{id}', [HotelController::class, 'showHotelDescription'])->name('hoteldescription');
+    Route::post('/booking', [BookingController::class, 'bookHotel'])->middleware([CustomerMiddleware::class])->name('booking');
 });
 
 //Global routes

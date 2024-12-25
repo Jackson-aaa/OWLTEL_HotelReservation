@@ -160,3 +160,7 @@ nav {
     font-size: 18px;
     margin-right: 5px;
 }
+
+.dropdown-menu {
+    width: max-content;
+}

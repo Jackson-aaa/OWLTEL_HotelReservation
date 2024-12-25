@@ -160,7 +160,7 @@
           @endforeach
         </div>
         <hr>
-        <p class="card-text"><small class="text-body-secondary price">{{money($hotel['price'], 'IDR')}}</small></p>
+        <p class="card-text"><small class="text-body-secondary price">{{money((float)$hotel['price'], 'IDR', true)}}</small></p>
         </div>
       </div>
       </div>
@@ -179,8 +179,14 @@
 
 <script>
   function redirectToHotelDescription(id) {
+    const currentParams = new URLSearchParams(window.location.search);
     const url = `{{ route('hoteldescription', ':id') }}`.replace(':id', id);
-    window.location.href = url;
+    const search =currentParams.get('search_input');
+    const checkIn = currentParams.get('check_in'); 
+    const checkOut = currentParams.get('check_out');
+    const queryParams = new URLSearchParams({ search_input: search, check_in: checkIn, check_out: checkOut }).toString();
+
+    window.location.href = `${url}?${queryParams}`;
   }
 </script>
 

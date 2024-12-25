@@ -93,6 +93,100 @@
         grid-template-rows: repeat(8, 5vw);
         grid-gap: 15px;
     }
+
+
+    .book-btn {
+        position: fixed;
+        bottom: 1%;
+        right: 1%;
+        z-index: 1000;
+        width: 60px;
+        height: 60px;
+        font-size: 15px;
+        background: #430000;
+        border: none;
+        color: white;
+    }
+
+    .book-btn:hover {
+        background: #430000;
+        opacity: 80%;
+        transition: 0.3s;
+        color: white;
+    }
+
+    .modal-book-btn {
+        background: #430000;
+        border: none;
+        color: white;
+        padding-inline: 25px;
+        padding-block: 5px;
+    }
+
+    .modal-book-btn:hover {
+        background: #430000;
+        opacity: 80%;
+        transition: 0.3s;
+        color: white;
+    }
+
+    .modal-body-date-container{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: fit-content;
+    }
+
+    .modal-body-date-divider {
+        height: 50px;
+        background-color: black;
+        width: 1px;
+        margin-block: 5px;
+        opacity: 50%;
+    }
+
+    .modal-body-date {
+        width: 50%;
+        text-align: center;
+        padding-block: 10px;
+    }
+
+    .modal-body-date p {
+        margin: 0;
+    }
+
+    .modal-body-date hr {
+        background-color: black;
+        opacity: 50%;
+        margin-inline: 20px;
+        margin-block: 0;
+    }
+
+    .modal-body-date-title {
+        font-weight: 200;
+    }
+
+    .modal-body-detail-container {
+        padding-inline: 20px;
+        margin-block: 20px;
+    }
+
+    .modal-body-detail-container p, .modal-body-detail-container hr {
+        margin-block: 0;
+    }
+
+    .modal-body-detail-container-total {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .modal-body-detail-container-total p {
+        font-size: 18px;
+    }
 </style>
 
 <div class="hotel-desc-container w-100 h-100">
@@ -187,6 +281,60 @@
         </div>
     </div>
 </div>
+
+<button type="button" class="btn book-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Book Now
+</button>
+
+@php
+    use Carbon\Carbon;
+    $checkInDate = Carbon::createFromFormat('d-m-Y', request('check_in'));
+    $checkOutDate = Carbon::createFromFormat('d-m-Y', request('check_out'));
+
+    $days = $checkInDate->diffInDays($checkOutDate);
+@endphp
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body">
+        <div class="modal-body-date-container">
+            <div class="modal-body-date">
+                <p class="modal-body-date-title">CHECK IN</p>
+                <hr/>
+                <p>{{$checkInDate->format('d-m-Y')}}</p>
+            </div>
+            <div class="modal-body-date-divider"></div>
+            <div class="modal-body-date">
+                <p class="modal-body-date-title">CHECK OUT</p>
+                <hr />
+                <p>{{$checkOutDate->format('d-m-Y')}}</p>
+            </div>
+        </div>
+        <div class="modal-body-detail-container">
+            <p>Details</p>
+            <hr />
+            <p>{{money((float)$hotel->initial_price, 'IDR', true)}} x {{ $days }} night{{ $days > 1 ? 's' : '' }}</p>
+            <div class="modal-body-detail-container-total">
+                <p>Total</p>
+                <p>{{money((float)$hotel->initial_price * (float)$days, 'IDR', true)}}</p>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end">
+            <form method="POST" action="{{ route('booking') }}">
+                @csrf
+                <input type="hidden" name="hotel_id" value="{{ $hotel->id }}">
+                <input type="hidden" name="check_in" value="{{ $checkInDate->format('Y-m-d') }}">
+                <input type="hidden" name="check_out" value="{{ $checkOutDate->format('Y-m-d') }}">
+                <button type="submit" class="btn modal-book-btn">Book</button>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <script>
     function currentDiv(n) {

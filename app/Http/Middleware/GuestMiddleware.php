@@ -6,13 +6,13 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class CustomerMiddleware
+class GuestMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->type !== 'admin') {
-            return $next($request);
+        if (Auth::check() && Auth::user()->type === 'admin') {
+            return redirect('/admin');
         }
-        return redirect('/auth');
+        return $next($request);
     }
 }

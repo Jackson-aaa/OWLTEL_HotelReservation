@@ -32,7 +32,7 @@ return new class extends Migration
         });
 
         Schema::table('bookings', function (Blueprint $table) {
-            $table->decimal('totcolumn: al_price')->change();
+            $table->decimal('total_price')->change();
         });
     }
 };
