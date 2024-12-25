@@ -68,7 +68,7 @@ $editSlot = "components.forms.editLocationForm";
 
 <script>
     function openModal(modalId) {
-        console.log(modalId)
+        // console.log(modalId)
         document.getElementById('create-modal-container').style.display = 'flex';
     }
 
@@ -99,7 +99,7 @@ $editSlot = "components.forms.editLocationForm";
 
     document.addEventListener('DOMContentLoaded', () => {
         const typeSelect = document.getElementById('type');
-        console.log(typeSelect);
+        // console.log(typeSelect);
         const locationSelect = document.getElementById('location_id');
         const locations = @json($locations_all);
 

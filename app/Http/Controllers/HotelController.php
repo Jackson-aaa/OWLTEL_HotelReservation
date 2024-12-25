@@ -64,10 +64,12 @@ class HotelController extends Controller
             $images = $request->file('images'); // Array of images
             $imageLinks = []; // Array to hold image links
 
+            $idx = 0;
             foreach ($images as $image) {
-                $imageName = $request->name . time() . '.' . $image->getClientOriginalExtension();
+                $imageName = $request->name . time() . '.' . $image->getClientOriginalExtension() . $idx;
                 $imagePath = Storage::disk('azure')->putFileAs('img/hotels', $image, $imageName);
                 $imageLinks[] = Storage::disk('azure')->url($imagePath);
+                $idx++;
             }
 
             $request['image_link'] = json_encode($imageLinks);
@@ -138,11 +140,13 @@ class HotelController extends Controller
 
             if ($request->hasFile('images')) {
                 $images = $request->file('images'); // Array of images
-
+                
+                $idx = 0;
                 foreach ($images as $image) {
-                    $imageName = $request->name . time() . '.' . $image->getClientOriginalExtension();
+                    $imageName = $request->name . time() . '.' . $image->getClientOriginalExtension() . $idx;
                     $imagePath = Storage::disk('azure')->putFileAs('img/hotels', $image, $imageName);
                     $imageLinks[] = Storage::disk('azure')->url($imagePath);
+                    $idx++;
                 }
 
                 $request['image_link'] = json_encode($imageLinks);

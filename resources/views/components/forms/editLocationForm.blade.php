@@ -41,7 +41,7 @@
 
         typeSelect.addEventListener('change', () => {
             const selectedType = typeSelect.value;
-            console.log("seltype", selectedType);
+            // console.log("seltype", selectedType);
 
             locationSelect.innerHTML = '<option value="" disabled selected>Select Location ID</option>';
 

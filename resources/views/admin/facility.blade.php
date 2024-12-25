@@ -61,7 +61,7 @@ $editSlot = "components.forms.editFacilityForm";
                 iconLibrariesCss: [],
                 resetSelector: '',
                 onSelect: function(jsonIconData) {
-                    console.log(jsonIconData);
+                    // console.log(jsonIconData);
                     document.querySelector(fieldId).value = jsonIconData.iconHtml;
                 },
                 onReset: function() {

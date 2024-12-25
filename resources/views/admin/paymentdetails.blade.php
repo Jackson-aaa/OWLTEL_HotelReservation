@@ -69,7 +69,7 @@
 
 <script>
     function showExtraFee(isChecked, edit) {
-        console.log(isChecked);
+        // console.log(isChecked);
 
         const nameContainer = document.getElementById(edit ? 'edit-extra_fee_name_container' : 'extra_fee_name_container');
         const percentageContainer = document.getElementById(edit ? 'edit-extra_fee_percentage_container' : 'extra_fee_percentage_container');

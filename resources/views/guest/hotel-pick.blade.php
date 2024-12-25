@@ -3,7 +3,7 @@
 
 @section('content')
 <style>
-  .hotel-pick-container{
+  .hotel-pick-container {
     display: flex;
     justify-content: center;
     align-items: start;
@@ -62,11 +62,16 @@
 
   .card {
     width: 100%;
+    cursor: pointer;
+  }
+
+  .card:hover {
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
   }
 
   .card-body {
     min-height: 100%;
-    max-height: 220px;
+    max-height: max-content;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -136,11 +141,11 @@
 </style>
 
 <div class="hotel-pick-container">
-  <div class="list">
+  <div class="list" onclick="">
     @foreach($hotels as $hotel)
-    <div class="card" style="max-width: 680px;">
+    <div class="card" style="max-width: 680px;" onclick="redirectToHotelDescription({{$hotel['id']}})">
       <div class="row g-0">
-      <div class="col-md-4">
+      <div class="col-md-4 h-auto mw-100">
         <img src="{{$hotel['image']}}" class="img-fluid rounded-start images" alt="...">
       </div>
       <div class="col-md-8">
@@ -151,8 +156,8 @@
         <hr>
         <div class="container-icon">
           @foreach($hotel['facilities'] as $facility)
-        <div class="icon">{!! $facility !!}</div>
-      @endforeach
+            <div class="icon">{!! $facility !!}</div>
+          @endforeach
         </div>
         <hr>
         <p class="card-text"><small class="text-body-secondary price">{{money($hotel['price'], 'IDR')}}</small></p>
@@ -172,6 +177,11 @@
   </div>
 @endif
 
-
+<script>
+  function redirectToHotelDescription(id) {
+    const url = `{{ route('hoteldescription', ':id') }}`.replace(':id', id);
+    window.location.href = url;
+  }
+</script>
 
 @endsection

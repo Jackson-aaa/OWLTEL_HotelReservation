@@ -95,7 +95,7 @@ $editSlot = "components.forms.editHotelForm";
 
 <script>
     function openModal(modalId) {
-        console.log(modalId)
+        // console.log(modalId)
         document.getElementById('create-modal-container').style.display = 'flex';
     }
 

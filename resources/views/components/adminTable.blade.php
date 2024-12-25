@@ -125,7 +125,7 @@ $actionRoute = "";
                                     input.value = data[fieldName];
                                 }
                             } else if (input.tagName === 'SELECT') {
-                                console.log('apa ini', data[fieldName])
+                                // console.log('apa ini', data[fieldName])
                                 if (fieldName === 'type') {
                                     input.value = data[fieldName];
                                     input.dispatchEvent(new Event('change'));
