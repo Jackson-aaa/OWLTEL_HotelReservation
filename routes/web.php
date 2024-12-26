@@ -58,6 +58,7 @@ Route::middleware([GuestMiddleware::class])->prefix('/')->group(function () {
     Route::get('/booking-history', [BookingController::class, 'showBookingHistory'])->name('bookinghistory');
     Route::get('/hotel-description/{id}', [HotelController::class, 'showHotelDescription'])->name('hoteldescription');
     Route::post('/booking', [BookingController::class, 'bookHotel'])->middleware([CustomerMiddleware::class])->name('booking');
+    Route::post('/booking-process', [BookingController::class, 'processBooking'])->middleware([CustomerMiddleware::class])->name('processBooking');
 });
 
 //Global routes
