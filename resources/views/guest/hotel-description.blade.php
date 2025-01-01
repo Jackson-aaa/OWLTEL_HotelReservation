@@ -322,7 +322,7 @@
             </div>
         </div>
         <div class="d-flex justify-content-end">
-            <form method="POST" action="{{ route('booking') }}">
+            <form method="GET" action="{{ route('booking') }}">
                 @csrf
                 <input type="hidden" name="hotel_id" value="{{ $hotel->id }}">
                 <input type="hidden" name="check_in" value="{{ $checkInDate->format('Y-m-d') }}">

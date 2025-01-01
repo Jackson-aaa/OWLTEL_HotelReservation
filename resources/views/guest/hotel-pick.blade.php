@@ -172,9 +172,13 @@
   </div>
 </div>
 @if ($hotels instanceof \Illuminate\Pagination\LengthAwarePaginator)
-  <div class="pagination-container">
-    {{ $hotels->links('vendor.pagination.bootstrap-5') }}
-  </div>
+    <div class="pagination-container">
+        {{ $hotels->appends([
+            'search_input' => request('search_input'),
+            'check_in' => request('check_in'),
+            'check_out' => request('check_out'),
+        ])->links('vendor.pagination.bootstrap-5') }}
+    </div>
 @endif
 
 <script>

@@ -62,12 +62,17 @@
 
     .index{
         width: 100%;
-        min-height: 100%;
+        min-height: 100vh;
         display: flex;
         align-items: center;
-        justify-content: flex-start;
+        justify-content: center;
         flex-direction: column;
         padding-block: 20px;
+        padding-bottom: auto;
+        background-image: url({{ asset('img/background-home.png') }});
+        background-repeat: no-repeat;
+        background-position-y: 100%;
+        background-size: 100% auto;
     }
 </style>
 @endsection
@@ -90,7 +95,7 @@
                     <div class="carousel-caption">
                         <h5>{{$destination->name}}</h5>
                         <p>{{$destination->description}}</p>
-                        <button>Show All</button>
+                        <button onclick="redirectToShowAll('{{$destination->name}}')">Show All</button>
                     </div>
                 </div>
                 @endforeach
@@ -120,6 +125,25 @@
             });
             buttons[event.to].classList.add('active');
         });
+
+        @php
+            use Carbon\Carbon;
+
+            $today = Carbon::now()->format('d-m-Y');
+            $tommorow = Carbon::now()->addDay()->format('d-m-Y');
+        @endphp
+
+        function redirectToShowAll(destination) {
+            // Use PHP variables passed into the JavaScript context
+            const today = "{{ $today }}";
+            const tomorrow = "{{ $tommorow }}";
+
+            // Build the URL
+            const url = `{{ route('showList') }}?search_input=${destination}&check_in=${today}&check_out=${tomorrow}`;
+
+            // Redirect to the URL
+            window.location.href = url;
+        }
     </script>
 </div>
 @endsection

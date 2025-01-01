@@ -7,34 +7,9 @@
 
 @section('jsScripts')
 <script src="{{asset('js/auth.js')}}"></script>
-@if ($errors->any())
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const toastBody = document.querySelector('#validationToast .toast-body');
-            toastBody.innerHTML = `
-                <ul style="margin: 0;">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            `;
-            const toastElement = new bootstrap.Toast(document.getElementById('validationToast'));
-            toastElement.show();
-        });
-    </script>
-@endif
 @endsection
 
 @section('content')
-
-<div class="position-fixed top-0 end-0 p-3" style="z-index: 9999 !important;">
-  <div id="validationToast" class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="d-flex">
-      <div class="toast-body">
-      </div>
-    </div>
-  </div>
-</div>
 
 <div class="container" id="container">
     <div class="form-container sign-in-container">

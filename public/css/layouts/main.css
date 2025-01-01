@@ -25,3 +25,8 @@ main {
     min-height: 100vh;
     max-height: fit-content;
 }
+
+#validationToast {
+	color: #fff;
+	background-color: #430000;
+}
