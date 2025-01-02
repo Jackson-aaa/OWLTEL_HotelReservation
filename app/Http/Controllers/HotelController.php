@@ -198,8 +198,9 @@ class HotelController extends Controller
 
     public function showHotelDescription(Request $request)
     {
-        $hotel = Hotel::with('hotelFacilities.facility')->find($request->id);
-        // dd(json_decode($hotel->image_link));
+
+        $hotel = Hotel::with(['hotelFacilities.facility', 'bookings.review'])->find($request->id);
+        
         return view("guest.hotel-description")
             ->with("hotel", $hotel);
     }

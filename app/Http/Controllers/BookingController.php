@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BookingPayment;
 use App\Models\PaymentDetail;
 use Illuminate\Http\Request;
 use App\Models\Booking;
@@ -11,7 +12,7 @@ use Carbon\Carbon;
 class BookingController extends Controller
 {
     public function showBookingHistory(){
-        $bookings = Booking::with('hotel')
+        $bookings = Booking::with(['hotel', 'review'])
             ->where('user_id', auth()->user()->id)
             ->orderBy('booking_date', 'desc')
             ->paginate(5);
@@ -27,7 +28,8 @@ class BookingController extends Controller
                 'book_date' => Carbon::parse($item->booking_date)->format('d/m/Y'),
                 'booked_for' => $item->booking_for,
                 'total_price' => $item->total_price,
-                'status' => $item->status
+                'status' => $item->status,
+                'review' => $item->review->score ?? null,
             ];
         });
 
@@ -68,6 +70,14 @@ class BookingController extends Controller
         ]);
 
         try {
+            $cardDetails = [
+                'card_number' => $request['card_number'],
+                'card_month' => $request['card_month'],
+                'card_year' => $request['card_year'],
+                'card_cvv' => $request['card_cvv'],
+                'card_name' => $request['card_name'],
+            ];
+
             $checkIn = Carbon::createFromFormat('Y-m-d', $request['check_in']);
             $checkOut = Carbon::createFromFormat('Y-m-d', $request['check_out']);
 
@@ -86,7 +96,7 @@ class BookingController extends Controller
             $hotel = Hotel::find($request['hotel_id']);
             $price = $hotel->initial_price * $days;
 
-            Booking::create([
+            $booking = Booking::create([
                 'hotel_id' => $request['hotel_id'],
                 'check_in' => $request['check_in'],
                 'check_out' => $request['check_out'],
@@ -96,10 +106,45 @@ class BookingController extends Controller
                 'booking_date' => Carbon::now(),
                 'status' => 'Booked'
             ]);
+            
+            BookingPayment::create([
+                'booking_id' => $booking->id,
+                'payment_detail_id' => $request['payment_method'],
+                'payment_information' => json_encode($cardDetails)
+            ]);
 
         } catch (\Exception $e) {
             \Log::error('Error creating booking: ' . $e->getMessage());
             return back()->withErrors(['error' => 'Could not create booking.']);
+        }
+
+        return redirect()->intended('/booking-history');
+    }
+
+    public function rateBooking(Request $request){
+
+        \Log::info($request->all());
+
+        $request->validate([
+            'booking_id' => 'required|numeric',
+            'rating' => 'required|numeric|min:1|max:5',
+            'review' => 'required|min:3',
+        ]);
+
+        $booking = Booking::find($request->booking_id);
+
+        $review = $booking->review;
+
+        if ($review) {
+            $review->update([
+                'score' => $request->rating,
+                'description' => $request->review,
+            ]);
+        } else {
+            $review = $booking->review()->create([
+                'score' => $request->rating,
+                'description' => $request->review,
+            ]);
         }
 
         return redirect()->intended('/booking-history');

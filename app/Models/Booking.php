@@ -30,5 +30,13 @@ class Booking extends Model
         return $this->belongsTo(Hotel::class);
     }
 
+    public function review(){
+        return $this->hasOne(Review::class);
+    }
+
+    public function bookingPayment(){
+        return $this->hasOne(BookingPayment::class);
+    }
+
     public $timestamps = true;
 }

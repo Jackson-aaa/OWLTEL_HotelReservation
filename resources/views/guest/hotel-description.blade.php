@@ -5,43 +5,53 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 <style>
-    .hotel-desc-container{
+    .hotel-desc-container {
         padding: 20px 40px;
         overflow-y: auto;
     }
-    .hotel-desc-title{
+
+    .hotel-desc-title {
         color: #430000;
         margin: 0;
     }
-    .hotel-desc-address{
+
+    .hotel-desc-address {
         margin-bottom: 17px;
     }
-    .hotel-desc-img-container{
+
+    .hotel-desc-img-container {
         padding: 0 25px;
     }
-    .hotel-desc-review-container{
+
+    .hotel-desc-review-container {
         padding: 0 25px;
         padding-top: 15px;
         align-items: center;
     }
-    .hotel-desc-star-container{
+
+    .hotel-desc-star-container {
         margin-right: 20px;
     }
-    .hotel-desc-star{
+
+    .hotel-desc-star {
         padding-right: 5px;
         font-size: 25px;
     }
-    .hotel-desc-review-number{
+
+    .hotel-desc-review-number {
         text-decoration: underline;
     }
-    .hotel-desc-facility-title{
+
+    .hotel-desc-facility-title {
         color: #430000;
         width: 100%;
         border-bottom: 1px solid #a87b7b;
     }
-    .hotel-desc-facility-container{
+
+    .hotel-desc-facility-container {
         padding-top: 25px;
     }
+
     .hotel-desc-grid-container {
         display: grid;
         grid-template-columns: auto auto auto;
@@ -52,41 +62,50 @@
         height: fit-content;
     }
 
-    .hotel-desc-grid-container > div {
+    .hotel-desc-grid-container>div {
         /* background-color: rgba(255, 255, 255, 0.8); */
         text-align: left;
         padding: 10px 0;
         font-size: 20px;
     }
-    .hotel-desc-grid-container > div > i {
+
+    .hotel-desc-grid-container>div>i {
         color: #430000;
     }
-    .hotel-desc-about-container{
+
+    .hotel-desc-about-container {
         padding-top: 20px;
     }
-    .hotel-desc-about-title{
+
+    .hotel-desc-about-title {
         color: #430000;
         width: 100%;
         border-top: 1px solid #a87b7b;
         padding-top: 20px;
     }
-    .hotel-desc-guest-star{
+
+    .hotel-desc-guest-star {
         font-size: 15px;
         padding-right: 3px;
     }
-    .hotel-desc-guest-review-title-container{
+
+    .hotel-desc-guest-review-title-container {
         align-items: center;
     }
-    .hotel-desc-guest-review-title{
+
+    .hotel-desc-guest-review-title {
         font-size: 20px;
         padding-right: 5px;
     }
-    .hotel-desc-about{
+
+    .hotel-desc-about {
         font-size: 20px;
     }
-    .hotel-desc-guest-review{
+
+    .hotel-desc-guest-review {
         font-size: 20px;
     }
+
     .gallery {
         display: grid;
         grid-template-columns: repeat(8, 1fr);
@@ -130,7 +149,7 @@
         color: white;
     }
 
-    .modal-body-date-container{
+    .modal-body-date-container {
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -173,7 +192,8 @@
         margin-block: 20px;
     }
 
-    .modal-body-detail-container p, .modal-body-detail-container hr {
+    .modal-body-detail-container p,
+    .modal-body-detail-container hr {
         margin-block: 0;
     }
 
@@ -199,10 +219,10 @@
                     $flag = true;
                 @endphp
                 @foreach (json_decode($hotel->image_link) as $img)
-                    <img class="mySlides" src="{{$img}}" style="width:100%; {{$flag?'':"display:none"}}">
-                    @php
-                        $flag = false;
-                    @endphp
+                                <img class="mySlides" src="{{$img}}" style="width:100%; {{$flag ? '' : "display:none"}}">
+                                @php
+                                    $flag = false;
+                                @endphp
                 @endforeach
 
                 <div class="w3-row-padding w3-section">
@@ -210,27 +230,47 @@
                         $count = 1;
                     @endphp
                     @foreach (json_decode($hotel->image_link) as $img)
-                        <div class="w3-col s4">
-                            <img class="demo w3-opacity w3-hover-opacity-off" src="{{$img}}" style="width:100%;cursor:pointer" onclick="currentDiv({{$count}})">
-                        </div>
-                        @php
-                            $count = $count+1;
-                        @endphp
+                                        <div class="w3-col s4">
+                                            <img class="demo w3-opacity w3-hover-opacity-off" src="{{$img}}"
+                                                style="width:100%;cursor:pointer" onclick="currentDiv({{$count}})">
+                                        </div>
+                                        @php
+                                            $count = $count + 1;
+                                        @endphp
                     @endforeach
                 </div>
             </div>
         </div>
         {{-- looping ratingnya nanti --}}
+        @php
+            $rating = $hotel->bookings
+                ->flatMap(fn($booking) => $booking->review ? [$booking->review->score] : [])
+                ->avg();
+        @endphp
         <div class="d-flex hotel-desc-review-container">
             <div class="hotel-desc-star-container">
-                <i class="bi bi-star-fill hotel-desc-star text-warning"></i>
-                <i class="bi bi-star-fill hotel-desc-star text-warning"></i>
-                <i class="bi bi-star-fill hotel-desc-star text-warning"></i>
-                <i class="bi bi-star-fill hotel-desc-star text-warning"></i>
-                <i class="bi bi-star-fill hotel-desc-star text-secondary"></i>
+                @for ($i = 1; $i <= 5; $i++)
+                    @if ($i <= $rating)
+                        <i class="bi bi-star-fill hotel-desc-star text-warning"></i>
+                    @else
+                        <i class="bi bi-star-fill hotel-desc-star text-secondary"></i>
+                    @endif
+                @endfor
             </div>
 
-            <div class="hotel-desc-review-number">24 Reviews</div>
+            <div class="hotel-desc-review-number">
+                @php
+                    $reviewCount = $hotel->bookings->filter(fn($booking) => $booking->review !== null)->count();
+                @endphp
+
+                @if ($reviewCount === 0)
+                    No reviews
+                @elseif ($reviewCount === 1)
+                    1 review
+                @else
+                    {{ $reviewCount }} reviews
+                @endif
+            </div>
         </div>
     </div>
 
@@ -259,31 +299,41 @@
             <h3>Guest Reviews</h3>
         </div>
         <div>
-            {{-- Looping juga --}}
-            <div>
-                <div class="hotel-desc-guest-review-title-container d-flex">
-                    <div class="hotel-desc-guest-review-title">"A Tropical Paradise"</div>
-                    <div class="d-flex">
-                        <i class="hotel-desc-guest-star bi bi-star-fill text-dark"></i>
-                        <i class="hotel-desc-guest-star bi bi-star-fill text-dark"></i>
-                        <i class="hotel-desc-guest-star bi bi-star-fill text-dark"></i>
-                        <i class="hotel-desc-guest-star bi bi-star-fill text-dark"></i>
-                        <i class="hotel-desc-guest-star bi bi-star-fill text-secondary"></i>
-                    </div>
-                </div>
+            @php
+                $bookings = $hotel->bookings->take(5);
+            @endphp
+
+            @if ($bookings->isEmpty() || $bookings->every(fn($booking) => $booking->review === null))
                 <div class="hotel-desc-guest-review">
-                    “We had an unforgettable stay at Daun Lebar Villas! The private pool and beautiful garden views made it a perfect getaway. The staff were incredibly friendly and attentive, and the location was peaceful yet close to Ubud. Can't wait to come back!”
+                    No reviews yet. Be the first to share your experience!
                 </div>
-                <div class="hotel-desc-guest-review">
-                    — Jessica, USA
-                </div>
-            </div>
+            @else
+                @foreach ($bookings as $booking)
+                    @if ($booking->review)
+                        <div>
+                            <div class="hotel-desc-guest-review">
+                                “{{ $booking->review->description }}”
+                            </div>
+                            <div class="hotel-desc-guest-review">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    @if ($i <= $booking->review->score)
+                                        <i class="hotel-desc-guest-star bi bi-star-fill text-dark"></i>
+                                    @else
+                                        <i class="hotel-desc-guest-star bi bi-star-fill text-secondary"></i>
+                                    @endif
+                                @endfor
+                                — {{ $booking->user->name }}
+                            </div>
+                        </div>
+                    @endif
+                @endforeach
+            @endif
         </div>
     </div>
 </div>
 
 <button type="button" class="btn book-btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Book Now
+    Book Now
 </button>
 
 @php
@@ -296,65 +346,66 @@
 
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-body">
-        <div class="modal-body-date-container">
-            <div class="modal-body-date">
-                <p class="modal-body-date-title">CHECK IN</p>
-                <hr/>
-                <p>{{$checkInDate->format('d-m-Y')}}</p>
-            </div>
-            <div class="modal-body-date-divider"></div>
-            <div class="modal-body-date">
-                <p class="modal-body-date-title">CHECK OUT</p>
-                <hr />
-                <p>{{$checkOutDate->format('d-m-Y')}}</p>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="modal-body-date-container">
+                    <div class="modal-body-date">
+                        <p class="modal-body-date-title">CHECK IN</p>
+                        <hr />
+                        <p>{{$checkInDate->format('d-m-Y')}}</p>
+                    </div>
+                    <div class="modal-body-date-divider"></div>
+                    <div class="modal-body-date">
+                        <p class="modal-body-date-title">CHECK OUT</p>
+                        <hr />
+                        <p>{{$checkOutDate->format('d-m-Y')}}</p>
+                    </div>
+                </div>
+                <div class="modal-body-detail-container">
+                    <p>Details</p>
+                    <hr />
+                    <p>{{money((float) $hotel->initial_price, 'IDR', true)}} x {{ $days }}
+                        night{{ $days > 1 ? 's' : '' }}</p>
+                    <div class="modal-body-detail-container-total">
+                        <p>Total</p>
+                        <p>{{money((float) $hotel->initial_price * (float) $days, 'IDR', true)}}</p>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <form method="GET" action="{{ route('booking') }}">
+                        @csrf
+                        <input type="hidden" name="hotel_id" value="{{ $hotel->id }}">
+                        <input type="hidden" name="check_in" value="{{ $checkInDate->format('Y-m-d') }}">
+                        <input type="hidden" name="check_out" value="{{ $checkOutDate->format('Y-m-d') }}">
+                        <button type="submit" class="btn modal-book-btn">Book</button>
+                    </form>
+                </div>
             </div>
         </div>
-        <div class="modal-body-detail-container">
-            <p>Details</p>
-            <hr />
-            <p>{{money((float)$hotel->initial_price, 'IDR', true)}} x {{ $days }} night{{ $days > 1 ? 's' : '' }}</p>
-            <div class="modal-body-detail-container-total">
-                <p>Total</p>
-                <p>{{money((float)$hotel->initial_price * (float)$days, 'IDR', true)}}</p>
-            </div>
-        </div>
-        <div class="d-flex justify-content-end">
-            <form method="GET" action="{{ route('booking') }}">
-                @csrf
-                <input type="hidden" name="hotel_id" value="{{ $hotel->id }}">
-                <input type="hidden" name="check_in" value="{{ $checkInDate->format('Y-m-d') }}">
-                <input type="hidden" name="check_out" value="{{ $checkOutDate->format('Y-m-d') }}">
-                <button type="submit" class="btn modal-book-btn">Book</button>
-            </form>
-        </div>
-      </div>
     </div>
-  </div>
 </div>
 
 
 <script>
     function currentDiv(n) {
-      showDivs(slideIndex = n);
+        showDivs(slideIndex = n);
     }
 
     function showDivs(n) {
-      var i;
-      var x = document.getElementsByClassName("mySlides");
-      var dots = document.getElementsByClassName("demo");
-      if (n > x.length) {slideIndex = 1}
-      if (n < 1) {slideIndex = x.length}
-      for (i = 0; i < x.length; i++) {
-        x[i].style.display = "none";
-      }
-      for (i = 0; i < dots.length; i++) {
-        dots[i].className = dots[i].className.replace(" w3-opacity-off", "");
-      }
-      x[slideIndex-1].style.display = "block";
-      dots[slideIndex-1].className += " w3-opacity-off";
+        var i;
+        var x = document.getElementsByClassName("mySlides");
+        var dots = document.getElementsByClassName("demo");
+        if (n > x.length) { slideIndex = 1 }
+        if (n < 1) { slideIndex = x.length }
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" w3-opacity-off", "");
+        }
+        x[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].className += " w3-opacity-off";
     }
 </script>
 
